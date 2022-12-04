@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">	<!-- for UseWPF-->
+  <PropertyGroup>
+	  <OutputType>Library</OutputType>
+	  <TargetFramework>net48</TargetFramework><!--needed by RhinoCommon.dll-->
+	  <UseWPF>false</UseWPF> 
+	  <UseWindowsForms>true</UseWindowsForms>  <!-- because Rhino.Scripting has ist too-->    
+	  
+	  <LangVersion>preview</LangVersion>
+	  <SatelliteResourceLanguages>en</SatelliteResourceLanguages> <!--to only have the English resources of Fsharp.Core-->
+	
+	  <RootNamespace>Euclid</RootNamespace>
+	  <AssemblyName>Euclid.Rhino</AssemblyName>
+	  <AssemblyTitle>Euclid.Rhino</AssemblyTitle>
+	  <PackageId>Euclid.Rhino</PackageId>
+	  
+	  <Product>Rhino Interop for Euclid</Product> <!--visible in explorer-->
+	  <Title>Rhino Interop for Euclid</Title>
+
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <NeutralLanguage>en</NeutralLanguage>
+
+	  <Version>0.1.0</Version> 
+	  <AssemblyVersion>0.1.0</AssemblyVersion> 
+	  <FileVersion>0.1.0</FileVersion> 
+
+	  <PlatformTarget>x64</PlatformTarget><!--  x64 is required e.g by Rhino, don't us just 'Platform' tag-->
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.5.2" />
+    <PackageReference Include="RhinoCommon" Version="6.7.18199.22081" PrivateAssets="all" ExcludeAssets="runtime" /> <!--should be the same version as Rhino.Scripting and Rhino.Scripting.Extension -->
+  </ItemGroup>
+
+  <ItemGroup>
+	  <Reference Include="Euclid"                HintPath="../Euclid/bin/release/net472/Euclid.dll" />
+	  <Reference Include="FsEx"                  HintPath="../FsEx/bin/Release/net472/FsEx.dll" />
+	  <Reference Include="Rhino.Scripting"       HintPath="../Rhino.Scripting/bin/Release/net48/Rhino.Scripting.dll" />
+	  <Reference Include="Rhino.ScriptingFSharp" HintPath="../Rhino.ScriptingFSharp/bin/Release/net48/Rhino.ScriptingFSharp.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="main.fs" />  
+  </ItemGroup>
+
+</Project>
