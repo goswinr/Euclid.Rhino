@@ -1,12 +1,8 @@
 ﻿namespace Euclid
 
+open System
 open Rhino
 open Rhino.Geometry
-open Rhino.ScriptingFSharp
-open FsEx 
-
-
-type rs = Rhino.Scripting
 
 /// If this module is opened then you can
 /// convert Rhino points and vectors and Euclid points and vectors to each other 
@@ -14,9 +10,7 @@ type rs = Rhino.Scripting
 /// Call setupDebugFunctions() to set the functions on the modules Euclid.Debug3D and Euclid.Debug2D to draw in Rhino.
 module RhinoIntegration =    
     
-    // Opening this module will also set the functions on the modules Euclid.Debug3D and Euclid.Debug2D to draw in Rhino.
-    // TODO it seems that this gets NOT called just by opening the module ! Calling  setupDebugFunctions() is needed.
-
+    
     // -----------------------------------------------------------------------
     // --------------------Extensions on Rhino types- ------------------------
     // -----------------------------------------------------------------------
@@ -125,10 +119,10 @@ module RhinoIntegration =
     type Geometry.Box with
 
         /// Convert a Rhino.Geometry.Box to a Euclid box.
-        member b.BoxFsEx = Euclid.Box.createFromPlane(b.Plane.PPlane, b.X.Length, b.Y.Length, b.Z.Length)
+        member b.BoxEuclid = Euclid.Box.createFromPlane(b.Plane.PPlane, b.X.Length, b.Y.Length, b.Z.Length)
 
         /// Convert a Rhino.Geometry.Box to a Euclid box.
-        static member toBoxFsEx(b:Geometry.Box) = Euclid.Box.createFromPlane(b.Plane.PPlane, b.X.Length, b.Y.Length, b.Z.Length)
+        static member toBoxEuclid(b:Geometry.Box) = Euclid.Box.createFromPlane(b.Plane.PPlane, b.X.Length, b.Y.Length, b.Z.Length)
         
 
     type Geometry.Polyline with
@@ -169,28 +163,28 @@ module RhinoIntegration =
         static member inline ofRhPt(p:Point3d) = Pt(p.X, p.Y) 
         
         /// Draw the Euclid 2D point in Rhino on current layer.
-        static member inline draw (p:Pt) = rs.AddPoint(p.X, p.Y, 0.0) 
+        static member  draw (p:Pt) = Rs.AddPoint(p.X, p.Y, 0.0) 
 
          /// Draw the Euclid 2D point as RhinoTextDot with given message.
-        static member inline drawDot msg (p:Pt)  = rs.AddTextDot(msg, p.X, p.Y, 0.0)
+        static member  drawDot msg (p:Pt)  = Rs.AddTextDot(msg, p.X, p.Y, 0.0)
 
         /// Draw the Euclid 2D point in Rhino on current layer.
-        member p.Draw() = rs.AddPoint(p.X, p.Y, 0.0) |> ignore
+        member p.Draw() = Rs.AddPoint(p.X, p.Y, 0.0) |> ignore
 
         /// Draw the Euclid 2D point in Rhino on given layer.
         /// The Layer will be created if it does not exist.
-        member p.Draw(layer) = rs.AddPoint(p.X, p.Y, 0.0) |> rs.setLayer layer
+        member p.Draw(layer) = Rs.AddPoint(p.X, p.Y, 0.0) |> Rs.setLayer layer
 
         /// Draw the Euclid 2D point in Rhino on given layer with given name.
         /// The Layer will be created if it does not exist.
-        member p.Draw(layer, name) = rs.AddPoint(p.X, p.Y, 0.0) |>! rs.setLayer layer  |> rs.setName name
+        member p.Draw(layer, name) = Rs.AddPoint(p.X, p.Y, 0.0) |> Rs.setLayerAndName layer name
         
         /// Draw the Euclid 2D point as RhinoTextDot with given message.
-        member p.DrawDot(msg) = rs.AddTextDot(msg, p.X, p.Y, 0.0) |> ignore
+        member p.DrawDot(msg) = Rs.AddTextDot(msg, p.X, p.Y, 0.0) |> ignore
 
         /// Draw the Euclid 2D point as RhinoTextDot with given message and given layer.
         /// The Layer will be created if it does not exist.
-        member p.DrawDot(msg, layer) = rs.AddTextDot(msg, p.X, p.Y, 0.0) |> rs.setLayer layer
+        member p.DrawDot(msg, layer) = Rs.AddTextDot(msg, p.X, p.Y, 0.0) |> Rs.setLayer layer
 
     type Pnt with
 
@@ -204,29 +198,29 @@ module RhinoIntegration =
         static member inline ofRhPt(p:Point3d) = Pnt(p.X, p.Y, p.Z)
 
         /// Draw the Euclid 3D point in Rhino on current layer.
-        static member inline draw (p:Pnt) = rs.AddPoint(p.X, p.Y, p.Z) 
+        static member  draw (p:Pnt) = Rs.AddPoint(p.X, p.Y, p.Z) 
 
          /// Draw the Euclid 3D point as RhinoTextDot with given message.
-        static member inline drawDot msg (p:Pnt)  = rs.AddTextDot(msg, p.X, p.Y, p.Z)
+        static member  drawDot msg (p:Pnt)  = Rs.AddTextDot(msg, p.X, p.Y, p.Z)
         
         /// Draw the Euclid 3D point in Rhino on current layer.
         /// The Layer will be created if it does not exist.
-        member p.Draw() = rs.AddPoint(p.X, p.Y, p.Z) |> ignore
+        member p.Draw() = Rs.AddPoint(p.X, p.Y, p.Z) |> ignore
 
         /// Draw the Euclid 3D point in Rhino on given layer.
         /// The Layer will be created if it does not exist.
-        member p.Draw(layer) = rs.AddPoint(p.X, p.Y, p.Z) |> rs.setLayer layer
+        member p.Draw(layer) = Rs.AddPoint(p.X, p.Y, p.Z) |> Rs.setLayer layer
 
         /// Draw the Euclid 3D point in Rhino on given layer with given name.
         /// The Layer will be created if it does not exist.
-        member p.Draw(layer, name) = rs.AddPoint(p.X, p.Y, p.Z) |>! rs.setLayer layer  |> rs.setName name
+        member p.Draw(layer, name) = Rs.AddPoint(p.X, p.Y, p.Z) |> Rs.setLayerAndName layer name
 
         /// Draw the Euclid 3D point as RhinoTextDot with given message.
-        member p.DrawDot(msg) = rs.AddTextDot(msg, p.X, p.Y, p.Z) |> ignore
+        member p.DrawDot(msg) = Rs.AddTextDot(msg, p.X, p.Y, p.Z) |> ignore
 
         /// Draw the Euclid 3D point as RhinoTextDot with given message and given layer.
         /// The Layer will be created if it does not exist.
-        member p.DrawDot(msg, layer) = rs.AddTextDot(msg, p.X, p.Y, p.Z) |> rs.setLayer layer
+        member p.DrawDot(msg, layer) = Rs.AddTextDot(msg, p.X, p.Y, p.Z) |> Rs.setLayer layer
 
 
     type Vc with        
@@ -242,26 +236,26 @@ module RhinoIntegration =
 
         /// Draw the Euclid 2D vector in Rhino as line with Curve Arrow. 
         /// Using given start point and scale.
-        static member inline draw (scale:float) (fromPt:Pt) (v:Vc) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt) 
+        static member  draw (scale:float) (fromPt:Pt) (v:Vc) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) 
 
         /// Draw the Euclid 2D vector in Rhino as line with Curve Arrow. 
         /// Using given start point, scale, layer and name.
         /// The Layer will be created if it does not exist.
-        member v.Draw(fromPt:Pt, scale:float, layer,  name) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt, layer) |> rs.setName name
+        member v.Draw(fromPt:Pt, scale:float, layer,  name) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> Rs.setLayerAndName layer name
 
         /// Draw the Euclid 2D vector in Rhino  as line with Curve Arrow. 
         /// Using given start point, scale and layer.
         /// The Layer will be created if it does not exist.
-        member v.Draw(fromPt:Pt, scale:float, layer) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt, layer) |> ignore
+        member v.Draw(fromPt:Pt, scale:float, layer) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> Rs.setLayer layer
 
         /// Draw the Euclid 2D vector in Rhino as line with Curve Arrow. 
         /// Using given start point and layer.
         /// The Layer will be created if it does not exist.
-        member v.Draw(fromPt:Pt, layer) = rs.DrawVector(v.RhVec , fromPt.RhPt, layer) |> ignore
+        member v.Draw(fromPt:Pt, layer) = Rs.DrawVector(v.RhVec , fromPt.RhPt) |> Rs.setLayer layer
 
         /// Draw the Euclid 2D vector in Rhino as line with Curve Arrow. 
         /// Using  given start point and scale.
-        member v.Draw(fromPt:Pt, scale:float) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> ignore
+        member v.Draw(fromPt:Pt, scale:float) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> ignore
 
     type UnitVc with
 
@@ -276,26 +270,26 @@ module RhinoIntegration =
 
         /// Draw the Euclid 2D unit vector in Rhino as line with Curve Arrow. 
         /// Using given start point and scale.
-        static member inline draw (scale:float) (fromPt:Pt) (v:UnitVc) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt) 
+        static member  draw (scale:float) (fromPt:Pt) (v:UnitVc) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) 
 
         /// Draw the Euclid 2D unit vector in Rhino as line with Curve Arrow. 
         /// Using given start point, scale, layer and name.
         /// The Layer will be created if it does not exist.
-        member v.Draw(fromPt:Pt, scale:float, layer,  name) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt, layer) |> rs.setName name
+        member v.Draw(fromPt:Pt, scale:float, layer,  name) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> Rs.setLayerAndName layer name
 
         /// Draw the Euclid 2D unit vector in Rhino as line with Curve Arrow. 
         /// Using given start point, scale and layer.
         /// The Layer will be created if it does not exist.
-        member v.Draw(fromPt:Pt, scale:float, layer) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt, layer) |> ignore
+        member v.Draw(fromPt:Pt, scale:float, layer) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> Rs.setLayer layer
 
         /// Draw the Euclid 2D unit vector in Rhino as line with Curve Arrow. 
         /// Using given start point and layer.
         /// The Layer will be created if it does not exist.
-        member v.Draw(fromPt:Pt, layer) = rs.DrawVector(v.RhVec , fromPt.RhPt, layer) |> ignore
+        member v.Draw(fromPt:Pt, layer) = Rs.DrawVector(v.RhVec , fromPt.RhPt) |> Rs.setLayer layer
 
         /// Draw the Euclid 2D unit vector in Rhino as line with Curve Arrow. 
         /// Using given start point and scale.
-        member v.Draw(fromPt:Pt, scale:float) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> ignore
+        member v.Draw(fromPt:Pt, scale:float) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> ignore
 
 
     type Vec with
@@ -311,25 +305,25 @@ module RhinoIntegration =
 
         /// Draw the Euclid 3D vector in Rhino as line with Curve Arrow. 
         /// Using given start point and scale.
-        static member inline draw (scale:float) (fromPt:Pt) (v:Vec) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt) 
+        static member draw (scale:float) (fromPt:Pt) (v:Vec) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) 
 
         /// Draw the Euclid 3D vector in Rhino with given start point, scale, layer and name.
         /// The Layer will be created if it does not exist.
-        member v.Draw(fromPt:Pnt, scale:float, layer,  name) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt, layer) |> rs.setName name
+        member v.Draw(fromPt:Pnt, scale:float, layer,  name) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> Rs.setLayerAndName layer name
 
         /// Draw the Euclid 3D vector in Rhino as line with Curve Arrow. 
         /// Using given start point, scale and layer.
         /// The Layer will be created if it does not exist.
-        member v.Draw(fromPt:Pnt, scale:float, layer) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt, layer) |> ignore
+        member v.Draw(fromPt:Pnt, scale:float, layer) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> Rs.setLayer layer
 
         /// Draw the Euclid 3D vector in Rhino as line with Curve Arrow. 
         /// Using given start point and layer.
         /// The Layer will be created if it does not exist.
-        member v.Draw(fromPt:Pnt, layer) = rs.DrawVector(v.RhVec , fromPt.RhPt, layer) |> ignore
+        member v.Draw(fromPt:Pnt, layer) = Rs.DrawVector(v.RhVec , fromPt.RhPt) |> Rs.setLayer layer
 
         /// Draw the Euclid 3D vector in Rhino as line with Curve Arrow. 
         /// Using given start point and scale.
-        member v.Draw(fromPt:Pnt, scale:float) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> ignore
+        member v.Draw(fromPt:Pnt, scale:float) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> ignore
 
     type UnitVec with
 
@@ -344,26 +338,26 @@ module RhinoIntegration =
         
         /// Draw the Euclid 3D unit vector in Rhino as line with Curve Arrow. 
         /// Using given start point and scale.
-        static member inline draw (scale:float) (fromPt:Pt) (v:UnitVec) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt) 
+        static member draw (scale:float) (fromPt:Pt) (v:UnitVec) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) 
 
         /// Draw the Euclid 3D unit vector in Rhino as line with Curve Arrow. 
         /// Using given start point, scale, layer and name.
         /// The Layer will be created if it does not exist.
-        member v.Draw(fromPt:Pt, scale:float, layer,  name) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt, layer) |> rs.setName name
+        member v.Draw(fromPt:Pt, scale:float, layer,  name) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> Rs.setLayerAndName layer name
 
         /// Draw the Euclid 3D unit vector in Rhino as line with Curve Arrow. 
         /// Using given start point, scale and layer.
         /// The Layer will be created if it does not exist.
-        member v.Draw(fromPt:Pt, scale:float, layer) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt, layer) |> ignore
+        member v.Draw(fromPt:Pt, scale:float, layer) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> Rs.setLayer layer
 
         /// Draw the Euclid 3D unit vector in Rhino as line with Curve Arrow. 
         /// Using given start point and layer.
         /// The Layer will be created if it does not exist.
-        member v.Draw(fromPt:Pt, layer) = rs.DrawVector(v.RhVec , fromPt.RhPt, layer) |> ignore
+        member v.Draw(fromPt:Pt, layer) = Rs.DrawVector(v.RhVec , fromPt.RhPt) |> Rs.setLayer layer
 
         /// Draw the Euclid 3D unit vector in Rhino as line with Curve Arrow. 
         /// Using given start point and scale.
-        member v.Draw(fromPt:Pt, scale:float) = rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> ignore
+        member v.Draw(fromPt:Pt, scale:float) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> ignore
 
     type Euclid.Line3D with
 
@@ -377,18 +371,18 @@ module RhinoIntegration =
         static member inline ofRhLine(l:Geometry.Line) = Line3D(l.FromX,l.FromY,l.FromZ, l.ToX,l.ToY,l.ToZ)
 
         /// Draw the Euclid 3D Line in Rhino on current layer.
-        static member inline draw(l:Line3D) = rs.AddLine(l.FromX,l.FromY,l.FromZ, l.ToX,l.ToY,l.ToZ) 
+        static member draw(l:Line3D) = Rs.AddLine(l.FromX,l.FromY,l.FromZ, l.ToX,l.ToY,l.ToZ) 
         
         /// Draw the Euclid 3D Line in Rhino with given layer and name. 
         /// The Layer will be created if it does not exist.
-        member l.Draw(layer, name) = rs.AddLine(l.FromX,l.FromY,l.FromZ, l.ToX,l.ToY,l.ToZ) |>! rs.setLayer layer |> rs.setName name
+        member l.Draw(layer, name) = Rs.AddLine(l.FromX,l.FromY,l.FromZ, l.ToX,l.ToY,l.ToZ) |> Rs.setLayerAndName layer name
 
         /// Draw the Euclid 3D Line in Rhino on given layer.
         /// The Layer will be created if it does not exist.
-        member l.Draw(layer) = rs.AddLine(l.FromX,l.FromY,l.FromZ, l.ToX,l.ToY,l.ToZ) |> rs.setLayer layer
+        member l.Draw(layer) = Rs.AddLine(l.FromX,l.FromY,l.FromZ, l.ToX,l.ToY,l.ToZ) |> Rs.setLayer layer
 
         /// Draw the Euclid 3D Line in Rhino on current layer.
-        member l.Draw() = rs.AddLine(l.FromX,l.FromY,l.FromZ, l.ToX,l.ToY,l.ToZ) |> ignore
+        member l.Draw() = Rs.AddLine(l.FromX,l.FromY,l.FromZ, l.ToX,l.ToY,l.ToZ) |> ignore
 
     type Euclid.Line2D with
 
@@ -402,21 +396,21 @@ module RhinoIntegration =
         static member inline ofRhLine(l:Line) = Line2D(l.FromX,l.FromY, l.ToX,l.ToY)
 
         /// Draw the Euclid 2D Line in Rhino on current layer.
-        static member inline draw(l:Line2D) = rs.AddLine(l.FromX, l.FromY, 0, l.ToX, l.ToY, 0) 
+        static member draw(l:Line2D) = Rs.AddLine(l.FromX, l.FromY, 0, l.ToX, l.ToY, 0) 
         
         /// Draw the Euclid 2D Line at given Z level in Rhino on current layer.
-        static member inline drawWithZ z (l:Line2D) = rs.AddLine(l.FromX, l.FromY, z, l.ToX, l.ToY, z)         
+        static member drawWithZ z (l:Line2D) = Rs.AddLine(l.FromX, l.FromY, z, l.ToX, l.ToY, z)         
 
         /// Draw the Euclid 2D Line in Rhino with given layer and name. 
         /// The Layer will be created if it does not exist.
-        member l.Draw(layer, name) = rs.AddLine(l.From.RhPt, l.To.RhPt) |>! rs.setLayer layer |> rs.setName name
+        member l.Draw(layer, name) = Rs.AddLine(l.From.RhPt, l.To.RhPt) |> Rs.setLayerAndName layer name
 
         /// Draw the Euclid 2D Line in Rhino on given layer.
         /// The Layer will be created if it does not exist.
-        member l.Draw(layer) = rs.AddLine(l.From.RhPt, l.To.RhPt) |> rs.setLayer layer
+        member l.Draw(layer) = Rs.AddLine(l.From.RhPt, l.To.RhPt) |> Rs.setLayer layer
 
         /// Draw the Euclid 2D Line in Rhino on current layer.
-        member l.Draw() = rs.AddLine(l.From.RhPt, l.To.RhPt) |> ignore
+        member l.Draw() = Rs.AddLine(l.From.RhPt, l.To.RhPt) |> ignore
 
         
 
@@ -435,33 +429,33 @@ module RhinoIntegration =
         ///<param name="axLength">The length  of the drawn lines</param>
         ///<param name="plane">The plane to draw.</param>
         ///<returns>A Rarr of 6 Guids ( 3 Lines , 3 TextDots) added to Rhino</returns>
-        static member inline draw (axLength) (plane:PPlane)= rs.DrawPlane(plane.RhPlane, axLength)
+        static member draw (axLength) (plane:PPlane)= Rs.DrawPlane(plane.RhPlane, axLength)
 
         ///<summary>Draws the axes of the PPlane and adds TextDots to label them.</summary>        
         ///<param name="axLength">The length  of the drawn lines</param>
         ///<param name="suffixInDot">Text to add to x TextDot label do of x axis. And y and z too.</param>
         ///<param name="layer">Layer to draw plane on. The Layer will be created if it does not exist.</param>
         ///<returns>unit</returns>
-        member p.Draw(axLength, suffixInDot, layer ) = rs.DrawPlane(p.RhPlane, axLength, suffixInDot, layer) |> ignore
+        member p.Draw(axLength, suffixInDot, layer ) = Rs.DrawPlane(p.RhPlane, axLength, suffixInDot, layer) |> ignore
         
         ///<summary>Draws the axes of the PPlane and adds TextDots to label them.</summary>        
         ///<param name="axLength">The length  of the drawn lines</param>
         ///<param name="suffixInDot">Text to add to x TextDot label do of x axis. And y and z too.</param>
         ///<returns>unit</returns>
-        member p.Draw(axLength, suffixInDot ) = rs.DrawPlane(p.RhPlane, axLength, suffixInDot) |> ignore
+        member p.Draw(axLength, suffixInDot ) = Rs.DrawPlane(p.RhPlane, axLength, suffixInDot) |> ignore
         
         ///<summary>Draws the axes of the PPlane and adds TextDots to label them.</summary>        
         ///<param name="axLength">The length  of the drawn lines</param>
         ///<returns>unit</returns>
-        member p.Draw(axLength) = rs.DrawPlane(p.RhPlane, axLength) |> ignore
+        member p.Draw(axLength) = Rs.DrawPlane(p.RhPlane, axLength) |> ignore
         
         ///Draws the axes of the PPlane and adds TextDots to label them.
-        member p.Draw() = rs.DrawPlane(p.RhPlane) |> ignore       
+        member p.Draw() = Rs.DrawPlane(p.RhPlane) |> ignore       
 
     type BRect with
         
         /// Draw the Euclid 2D Bounding Rectangle in Rhino as Polyline on current layer.
-        static member inline drawPolyLine (rect:BRect) = rs.Ot.AddPolyline(rect.RhPolyline)
+        static member drawPolyLine (rect:BRect) = Rs.AddPolyline(rect.RhPolyline)
         
         /// Convert Euclid 2D Bounding Rectangle to a closed Rhino Polyline.
         member r.RhPolyline =  new Polyline(r.CornersLooped |> Seq.map ( fun p -> p.RhPt) )
@@ -487,15 +481,17 @@ module RhinoIntegration =
         ///   |/              |/     
         ///   +---------------+----> X-Axis
         ///   0 MinPt         1
-        static member inline drawPolyLine (bbox:BBox) = 
+        static member drawPolyLine (bbox:BBox) = 
             let pts = seq{ bbox.Pt0; bbox.Pt1; bbox.Pt2; bbox.Pt3; bbox.Pt0; bbox.Pt4; bbox.Pt5; bbox.Pt6; bbox.Pt7; bbox.Pt4 }
-            rs.Ot.AddPolyline(bbox.Corners |> Seq.map ( fun p -> p.RhPt))
+            Rs.AddPolyline(bbox.Corners |> Seq.map ( fun p -> p.RhPt))
 
         /// Draw the Euclid 3D Bounding Box  in Rhino as Mesh on current layer.
-        static member inline drawMesh (bbox:BBox) = 
+        static member drawMesh (bbox:BBox) = 
             let b: Geometry.BoundingBox = bbox.RhBBox
             let m = Mesh.CreateFromBox(b, 1, 1, 1)
-            rs.Ot.AddMesh(m)
+            let g = State.Doc.Objects.AddMesh(m)
+            if g = Guid.Empty then failwithf "Eclid.Rhino.BBox.drawMesh failed for %O" bbox
+            g
 
         /// Convert Euclid the 3D Bounding Box to a Rhino bounding box .
         member b.RhBBox = Geometry.BoundingBox(b.MinPnt.RhPt, b.MaxPnt.RhPt)
@@ -504,7 +500,7 @@ module RhinoIntegration =
         
         /// Convert Euclid 3D Box to a Rhino box .
         member b.RhBox =   
-            let pl = b.PPlane.RhPlane
+            let pl = b.Plane.RhPlane
             let x = Geometry.Interval(0, b.SizeX)
             let y = Geometry.Interval(0, b.SizeY)
             let z = Geometry.Interval(0, b.SizeZ)
@@ -529,15 +525,17 @@ module RhinoIntegration =
         ///   |/              |/     local
         ///   +---------------+----> X-Axis
         ///   0               1
-        static member inline drawPolyLine (box:Euclid.Box) = 
+        static member drawPolyLine (box:Euclid.Box) = 
             let pts = seq{ box.Pt0; box.Pt1; box.Pt2; box.Pt3; box.Pt0; box.Pt4; box.Pt5; box.Pt6; box.Pt7; box.Pt4 }
-            rs.Ot.AddPolyline(box.Corners |> Seq.map ( fun p -> p.RhPt))
+            Rs.AddPolyline(box.Corners |> Seq.map ( fun p -> p.RhPt))
 
         /// Draw the Euclid 3D Box in Rhino as Mesh on current layer.
-        static member inline drawMesh (box:Euclid.Box) = 
+        static member drawMesh (box:Euclid.Box) = 
             let b: Geometry.Box = box.RhBox
             let m = Mesh.CreateFromBox(b, 1, 1, 1)
-            rs.Ot.AddMesh(m)
+            let g = State.Doc.Objects.AddMesh(m)
+            if g = Guid.Empty then failwithf "Eclid.Rhino.Box.drawMesh failed for %O" box
+            g
             
 
     type Polyline3D with
@@ -554,7 +552,7 @@ module RhinoIntegration =
             
         
         /// Draw Euclid 3D Polyline in  Rhino.
-        static member inline draw (p:Polyline3D) = rs.Ot.AddPolyline p.RhPolyline
+        static member draw (p:Polyline3D) = Rs.AddPolyline p.RhPolyline
 
         /// Convert Euclid 3D Polyline to a Rhino Polyline.
         static member inline toRhPolyline (p:Polyline3D) = p.RhPolyline
@@ -584,10 +582,10 @@ module RhinoIntegration =
             new Geometry.Polyline(pts) 
 
         /// Draw Euclid 2D Polyline in Rhino in World XY Plane.
-        static member inline draw (p:Polyline2D) = rs.Ot.AddPolyline p.RhPolyline
+        static member draw (p:Polyline2D) = Rs.AddPolyline p.RhPolyline
         
         /// Draw Euclid 2D Polyline in Rhino at Given Z level.
-        static member inline drawZ  z (p:Polyline2D) = rs.Ot.AddPolyline (p.RhPolylineZ z)
+        static member drawZ  z (p:Polyline2D) = Rs.AddPolyline (p.RhPolylineZ z)
         
         /// Convert Euclid 2D Polyline to a Rhino Polyline in World XY Plane.
         static member inline toRhPolyline (p:Polyline2D) = p.RhPolyline
@@ -647,23 +645,36 @@ module RhinoIntegration =
             new Geometry.Polyline(pts)
 
         /// Draw Euclid 2D Loop  in Rhino in World XY Plane.
-        static member inline draw (p:Loop) = rs.Ot.AddPolyline p.RhPolyline
+        static member draw (p:Loop) = Rs.AddPolyline p.RhPolyline
         
         /// Draw Euclid 2D Loop  in Rhino at Given Z level.
-        static member inline drawZ  z (p:Loop) = rs.Ot.AddPolyline (p.RhPolylineZ z)
+        static member drawZ  z (p:Loop) = Rs.AddPolyline (p.RhPolylineZ z)
 
         /// Try to create a Euclid Loop with minimum segment length and snapping tolerance from a Guid of a Rhino PolylineCurve.
-        static member createOfRhGuid minSegLen snapTol (guid:System.Guid) : Loop =  
-            guid
-            |> rs.PolylineVertices
-            |> Rarr.map (fun p -> Pt(p.X, p.Y))
-            |> Loop.create minSegLen snapTol
+        static member createOfRhGuid minSegLen snapTol (guid:System.Guid) : Loop = 
+            let obj = State.Doc.Objects.FindId(guid) 
+            if isNull obj then failwithf "Eclid.Rhino.Rs.Loop.createOfRhGuid: %O not found"  guid            
+            match obj.Geometry with
+            | :? Curve as curve -> 
+                if not curve.IsClosed then failwithf "Eclid.Rhino.Rs.Loop.createOfRhGuid: Curve not closed %A " guid
+                let rc, polyline = curve.TryGetPolyline()
+                if rc then  
+                    polyline
+                    |> Seq.map (fun p -> Pt(p.X, p.Y))
+                    |> Array.ofSeq
+                    |> Loop.create minSegLen snapTol
+                else                 
+                    failwithf "Eclid.Rhino.Rs.Loop.createOfRhGuid: guid does not reference a polyline. guid:'%A' " guid
+                                
+            | _ -> failwithf "Eclid.Rhino.Rs.Loop.createOfRhGuid: failed on: %O " guid
+            
 
         /// Try to create a Euclid Loop with minimum segment length and snapping tolerance from a Rhino PolylineCurve Geometry.
         static member createOfRhPoly minSegLen snapTol (poly:PolylineCurve) : Loop =  
-            poly.Points
-            |> Seq.map (fun p -> Pt(p.X, p.Y))
-            |> Rarr.ofSeq
+            if not poly.IsClosed then failwithf "Eclid.Rhino.Rs.Loop.createOfRhPoly: PolylineCurve not closed " 
+            [| for i = 0 to poly.PointCount - 1 do 
+                let p = poly.Point(i)  
+                Pt(p.X, p.Y) |]
             |> Loop.create minSegLen snapTol
     
     /// Dependency injection for debugging in Rhino:
@@ -672,31 +683,31 @@ module RhinoIntegration =
     /// By default these functions do nothing.
     /// Here, upon opening Euclid.Rhino they get replaced with implementations that use Rhino for drawing:    
     let setupDebugFunctions () =   
-        Debug2D.drawDot         <- fun msg pt        -> rs.AddTextDot(msg, pt.X, pt.Y, 0.0)                 |> rs.setLayer "Euclid.Debug2D::drawDot"
-        Debug2D.drawPt          <- fun pt            -> rs.AddPoint(pt.X, pt.Y, 0.0)                        |> rs.setLayer "Euclid.Debug2D::drawPt"
-        Debug2D.drawLine        <- fun (ln)          -> rs.AddLine2D(ln.FromX, ln.FromY, ln.ToX, ln.ToY)    |> rs.setLayer "Euclid.Debug2D::drawLine"
-        Debug2D.drawLineFromTo  <- fun (a:Pt, b:Pt)  -> rs.AddLine2D(a.X, a.Y, b.X, b.Y )                   |> rs.setLayer "Euclid.Debug2D::drawLine"
-        Debug2D.drawPolyLine    <- fun (ps:seq<Pt>)  -> rs.AddPolyline(ps |> Seq.map Pt.toRhPt)             |> rs.setLayer "Euclid.Debug2D::drawPolyLine"
+        Debug2D.drawDot         <- fun msg pt        -> Rs.AddTextDot(msg, pt.X, pt.Y, 0.0)                 |> Rs.setLayer "Euclid.Debug2D::drawDot"
+        Debug2D.drawPt          <- fun pt            -> Rs.AddPoint(pt.X, pt.Y, 0.0)                        |> Rs.setLayer "Euclid.Debug2D::drawPt"
+        Debug2D.drawLine        <- fun (ln)          -> Rs.AddLine2D(ln.FromX, ln.FromY, ln.ToX, ln.ToY)    |> Rs.setLayer "Euclid.Debug2D::drawLine"
+        Debug2D.drawLineFromTo  <- fun (a:Pt, b:Pt)  -> Rs.AddLine2D(a.X, a.Y, b.X, b.Y )                   |> Rs.setLayer "Euclid.Debug2D::drawLine"
+        Debug2D.drawPolyLine    <- fun (ps:seq<Pt>)  -> Rs.AddPolyline(ps |> Seq.map Pt.toRhPt)             |> Rs.setLayer "Euclid.Debug2D::drawPolyLine"
 
         // pt:Pt -> msg:string -> layer:string
-        Debug2D.drawDotLayer         <- fun (pt:Pt, msg:string, layer:string) -> rs.AddTextDot(msg, pt.X, pt.Y, 0.0)                |> rs.setLayer layer
-        Debug2D.drawPtLayer          <- fun (pt:Pt, layer:string)             -> rs.AddPoint(pt.X, pt.Y, 0.0)                       |> rs.setLayer layer
-        Debug2D.drawLineLayer        <- fun (ln:Line2D, layer:string)         -> rs.AddLine2D(ln.FromX, ln.FromY, ln.ToX, ln.ToY)   |> rs.setLayer layer
-        Debug2D.drawPolyLineLayer    <- fun (ps:seq<Pt>, layer:string)        -> rs.AddPolyline(ps |> Seq.map Pt.toRhPt )           |> rs.setLayer layer
-        Debug2D.drawLineFromToLayer  <- fun (a:Pt, b:Pt, layer:string)         -> rs.AddLine2D(a.X, a.Y, b.X, b.Y )                 |> rs.setLayer layer
+        Debug2D.drawDotLayer         <- fun (pt:Pt, msg:string, layer:string) -> Rs.AddTextDot(msg, pt.X, pt.Y, 0.0)                |> Rs.setLayer layer
+        Debug2D.drawPtLayer          <- fun (pt:Pt, layer:string)             -> Rs.AddPoint(pt.X, pt.Y, 0.0)                       |> Rs.setLayer layer
+        Debug2D.drawLineLayer        <- fun (ln:Line2D, layer:string)         -> Rs.AddLine2D(ln.FromX, ln.FromY, ln.ToX, ln.ToY)   |> Rs.setLayer layer
+        Debug2D.drawPolyLineLayer    <- fun (ps:seq<Pt>, layer:string)        -> Rs.AddPolyline(ps |> Seq.map Pt.toRhPt )           |> Rs.setLayer layer
+        Debug2D.drawLineFromToLayer  <- fun (a:Pt, b:Pt, layer:string)         -> Rs.AddLine2D(a.X, a.Y, b.X, b.Y )                 |> Rs.setLayer layer
 
-        Debug3D.drawDot          <- fun msg pt        -> rs.AddTextDot(msg, pt.X, pt.Y, pt.Z)                               |> rs.setLayer "Euclid.Debug2D::drawDot"
-        Debug3D.drawPt           <- fun pt            -> rs.AddPoint(pt.X, pt.Y, pt.Z)                                      |> rs.setLayer "Euclid.Debug2D::drawPt"
-        Debug3D.drawLine         <- fun (ln:Line3D)   -> rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ)   |> rs.setLayer "Euclid.Debug2D::drawLine"
-        Debug3D.drawLineFromTo   <- fun (a:Pnt, b:Pnt)  -> rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z )                        |> rs.setLayer "Euclid.Debug2D::drawLine"
-        Debug3D.drawPolyLine     <- fun (ps:seq<Pnt>)  -> rs.AddPolyline(ps |> Seq.map Pnt.toRhPt)                          |> rs.setLayer "Euclid.Debug2D::drawPolyLine"
+        Debug3D.drawDot          <- fun msg pt        -> Rs.AddTextDot(msg, pt.X, pt.Y, pt.Z)                               |> Rs.setLayer "Euclid.Debug2D::drawDot"
+        Debug3D.drawPt           <- fun pt            -> Rs.AddPoint(pt.X, pt.Y, pt.Z)                                      |> Rs.setLayer "Euclid.Debug2D::drawPt"
+        Debug3D.drawLine         <- fun (ln:Line3D)   -> Rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ)   |> Rs.setLayer "Euclid.Debug2D::drawLine"
+        Debug3D.drawLineFromTo   <- fun (a:Pnt, b:Pnt)  -> Rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z )                        |> Rs.setLayer "Euclid.Debug2D::drawLine"
+        Debug3D.drawPolyLine     <- fun (ps:seq<Pnt>)  -> Rs.AddPolyline(ps |> Seq.map Pnt.toRhPt)                          |> Rs.setLayer "Euclid.Debug2D::drawPolyLine"
 
         // pt:Pnt -> msg:string -> layer:string
-        Debug3D.drawDotLayer        <- fun (pt:Pnt, msg:string, layer:string) -> rs.AddTextDot(msg, pt.X, pt.Y, pt.Z)                               |> rs.setLayer layer
-        Debug3D.drawPtLayer         <- fun (pt:Pnt, layer:string)              -> rs.AddPoint(pt.X, pt.Y, pt.Z)                                     |> rs.setLayer layer
-        Debug3D.drawLineLayer       <- fun (ln:Line3D, layer:string)           -> rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ)  |> rs.setLayer layer
-        Debug3D.drawLineFromToLayer <- fun (a:Pnt, b:Pnt, layer:string)         -> rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z )                        |> rs.setLayer layer
-        Debug3D.drawPolyLineLayer   <- fun (ps:seq<Pnt>, layer:string)         -> rs.AddPolyline(ps |> Seq.map Pnt.toRhPt)                          |> rs.setLayer layer
+        Debug3D.drawDotLayer        <- fun (pt:Pnt, msg:string, layer:string) -> Rs.AddTextDot(msg, pt.X, pt.Y, pt.Z)                               |> Rs.setLayer layer
+        Debug3D.drawPtLayer         <- fun (pt:Pnt, layer:string)              -> Rs.AddPoint(pt.X, pt.Y, pt.Z)                                     |> Rs.setLayer layer
+        Debug3D.drawLineLayer       <- fun (ln:Line3D, layer:string)           -> Rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ)  |> Rs.setLayer layer
+        Debug3D.drawLineFromToLayer <- fun (a:Pnt, b:Pnt, layer:string)         -> Rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z )                        |> Rs.setLayer layer
+        Debug3D.drawPolyLineLayer   <- fun (ps:seq<Pnt>, layer:string)         -> Rs.AddPolyline(ps |> Seq.map Pnt.toRhPt)                          |> Rs.setLayer layer
 
 
 
