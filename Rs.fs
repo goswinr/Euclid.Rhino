@@ -17,52 +17,52 @@ type internal Rs private () =
     
     static member setLayer (layer:string) (objectId:Guid) : unit = 
         let obj = State.Doc.Objects.FindId(objectId) 
-        if isNull obj then failwithf "Eclid.Rhino.Rs.setLayer: %O not found for layer '%s'"  objectId layer
+        if isNull obj then failwithf "Euclid.Rhino.Rs.setLayer: %O not found for layer '%s'"  objectId layer
         let layerIndex = UtilLayer.getOrCreateLayer(layer,UtilLayer.randomLayerColor, UtilLayer.ByParent, UtilLayer.ByParent, true).Index
             
         obj.Attributes.LayerIndex <- layerIndex
-        if not <| obj.CommitChanges() then failwithf "Eclid.Rhino.Rs.setLayer: Setting it failed for layer '%s' on: %O " layer objectId
+        if not <| obj.CommitChanges() then failwithf "Euclid.Rhino.Rs.setLayer: Setting it failed for layer '%s' on: %O " layer objectId
         State.Doc.Views.Redraw() 
         
     static member setLayerAndName (layer:string) (name:string) (objectId:Guid) : unit = 
         let obj = State.Doc.Objects.FindId(objectId) 
-        if isNull obj then failwithf "Eclid.Rhino.Rs.setLayerAndName: %O not found for layer '%s'"  objectId layer
+        if isNull obj then failwithf "Euclid.Rhino.Rs.setLayerAndName: %O not found for layer '%s'"  objectId layer
         let layerIndex = UtilLayer.getOrCreateLayer(layer,UtilLayer.randomLayerColor, UtilLayer.ByParent, UtilLayer.ByParent, true).Index
             
         obj.Attributes.LayerIndex <- layerIndex
         if UtilLayer.isAcceptableStringId(name,true) then 
             obj.Attributes.Name <- name
         else
-            failwithf "Eclid.Rhino.Rs.setLayerAndName: Setting it failed for name '%s' on layer '%s' : %O " name layer objectId
-        if not <| obj.CommitChanges() then failwithf "Eclid.Rhino.Rs.setLayerAndName: Setting it failed for layer '%s' on: %O " layer objectId
+            failwithf "Euclid.Rhino.Rs.setLayerAndName: Setting it failed for name '%s' on layer '%s' : %O " name layer objectId
+        if not <| obj.CommitChanges() then failwithf "Euclid.Rhino.Rs.setLayerAndName: Setting it failed for layer '%s' on: %O " layer objectId
         State.Doc.Views.Redraw() 
 
     static member setName  (name:string) (objectId:Guid) : unit = 
         let obj = State.Doc.Objects.FindId(objectId) 
-        if isNull obj then failwithf "Eclid.Rhino.Rs.setName: %O not found for name '%s'"  objectId name          
+        if isNull obj then failwithf "Euclid.Rhino.Rs.setName: %O not found for name '%s'"  objectId name          
         
         if UtilLayer.isAcceptableStringId(name,true) then 
             obj.Attributes.Name <- name
         else
-            failwithf "Eclid.Rhino.Rs.setName: Setting it failed for name '%s' on  : %O " name objectId
-        if not <| obj.CommitChanges() then failwithf "Eclid.Rhino.Rs.setName: Setting it failed for name '%s' on: %O " name objectId
+            failwithf "Euclid.Rhino.Rs.setName: Setting it failed for name '%s' on  : %O " name objectId
+        if not <| obj.CommitChanges() then failwithf "Euclid.Rhino.Rs.setName: Setting it failed for name '%s' on: %O " name objectId
         State.Doc.Views.Redraw() 
 
     static member AddPoint(x,y,z) : Guid = 
         let g = State.Doc.Objects.AddPoint(x,y,z)
-        if g = Guid.Empty then failwithf "Eclid.Rhino.Rs.AddPoint failed on x:%g, y:%g, z:%g" x y z
+        if g = Guid.Empty then failwithf "Euclid.Rhino.Rs.AddPoint failed on x:%g, y:%g, z:%g" x y z
         State.Doc.Views.Redraw()
         g
 
     static member AddTextDot(t,x,y,z) : Guid = 
         let g = State.Doc.Objects.AddTextDot(t, Point3d(x,y,z))
-        if g = Guid.Empty then failwithf "Eclid.Rhino.Rs.AddTextDot failed on x:%g, y:%g, z:%g" x y z
+        if g = Guid.Empty then failwithf "Euclid.Rhino.Rs.AddTextDot failed on x:%g, y:%g, z:%g" x y z
         State.Doc.Views.Redraw()
         g
     
     static member AddTextDot(t,p:Point3d) : Guid = 
         let g = State.Doc.Objects.AddTextDot(t, p)
-        if g = Guid.Empty then failwithf "Eclid.Rhino.Rs.AddTextDot failed on point :%O" p
+        if g = Guid.Empty then failwithf "Euclid.Rhino.Rs.AddTextDot failed on point :%O" p
         State.Doc.Views.Redraw()
         g
 
@@ -72,7 +72,7 @@ type internal Rs private () =
     ///<returns>(Guid) objectId of the new Curve object.</returns>
     static member AddLine(start:Point3d, ende:Point3d) : Guid = 
         let  rc = State.Doc.Objects.AddLine(start, ende)
-        if rc = Guid.Empty then failwithf "Eclid.Rhino.Rs.AddLine: Unable to add line to document. start:%O ende:%O" start ende
+        if rc = Guid.Empty then failwithf "Euclid.Rhino.Rs.AddLine: Unable to add line to document. start:%O ende:%O" start ende
         State.Doc.Views.Redraw()
         rc
 
@@ -88,7 +88,7 @@ type internal Rs private () =
         let start = Point3d(startX,startY,startZ)
         let ende = Point3d(endX,endY,endZ)
         let  rc = State.Doc.Objects.AddLine(start, ende)
-        if rc = Guid.Empty then failwithf "Eclid.Rhino.Rs.AddLine: Unable to add line to document. startX:%g ,startY:%g ,startZ:%g and endX:%g ,endY:%g ,endZ:%g" startX startY startZ endX endY endZ
+        if rc = Guid.Empty then failwithf "Euclid.Rhino.Rs.AddLine: Unable to add line to document. startX:%g ,startY:%g ,startZ:%g and endX:%g ,endY:%g ,endZ:%g" startX startY startZ endX endY endZ
         State.Doc.Views.Redraw()
         rc
     
@@ -102,7 +102,7 @@ type internal Rs private () =
         let start = Point3d(startX,startY,0.0)
         let ende = Point3d(endX,endY,0.0)
         let  rc = State.Doc.Objects.AddLine(start, ende)
-        if rc = Guid.Empty then failwithf "Eclid.Rhino.Rs.AddLine2D: Unable to add line to document. startX:%g ,startY:%g  and  endX:%g ,endY:%g," startX startY  endX endY 
+        if rc = Guid.Empty then failwithf "Euclid.Rhino.Rs.AddLine2D: Unable to add line to document. startX:%g ,startY:%g  and  endX:%g ,endY:%g," startX startY  endX endY 
         State.Doc.Views.Redraw()
         rc
     
@@ -116,7 +116,7 @@ type internal Rs private () =
     ///<returns>(unit) void, nothing.</returns>
     static member CurveArrows(curveId:Guid, arrowStyle:int) : unit = //SET
         let rhobj = State.Doc.Objects.FindId(curveId) 
-        if isNull rhobj then failwithf "Eclid.Rhino.Rs.CurveArrows: %O not found " curveId 
+        if isNull rhobj then failwithf "Euclid.Rhino.Rs.CurveArrows: %O not found " curveId 
         let attr = rhobj.Attributes
         //let rc = attr.ObjectDecoration
         if arrowStyle >= 0 && arrowStyle <= 3 then
@@ -129,10 +129,10 @@ type internal Rs private () =
             elif arrowStyle = 3 then
                 attr.ObjectDecoration <- DocObjects.ObjectDecoration.BothArrowhead
             if not <| State.Doc.Objects.ModifyAttributes(curveId, attr, quiet=true) then
-                failwithf "Eclid.Rhino.Rs.CurveArrows ModifyAttributes failed on style %d on %A" arrowStyle curveId
+                failwithf "Euclid.Rhino.Rs.CurveArrows ModifyAttributes failed on style %d on %A" arrowStyle curveId
             State.Doc.Views.Redraw()
         else
-            failwithf "Eclid.Rhino.Rs.CurveArrows style %d is invalid" arrowStyle
+            failwithf "Euclid.Rhino.Rs.CurveArrows style %d is invalid" arrowStyle
 
     /// Draws a line with a Curve Arrows from World Origin.
     static member DrawVector( vector:Vector3d) : Guid  = 
@@ -168,7 +168,7 @@ type internal Rs private () =
                 Rs.setLayer layer e
 
         let index = State.Doc.Groups.Add()        
-        if not <| State.Doc.Groups.AddToGroup(index, es) then failwithf "Eclid.Rhino.DrawPlane failed on %A" pl        
+        if not <| State.Doc.Groups.AddToGroup(index, es) then failwithf "Euclid.Rhino.DrawPlane failed on %A" pl        
         es
 
 
@@ -182,6 +182,6 @@ type internal Rs private () =
         let rc = State.Doc.Objects.AddPolyline(pl)
         if rc = Guid.Empty then
             let ps = points |> Seq.map string |> String.concat "\r\n   "
-            failwithf "Eclid.Rhino.AddPolyline: Unable to add polyline to document form %d points:\r\n '%s'" (Seq.length points) ps
+            failwithf "Euclid.Rhino.AddPolyline: Unable to add polyline to document form %d points:\r\n '%s'" (Seq.length points) ps
         State.Doc.Views.Redraw()
         rc

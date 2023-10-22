@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">	<!-- for UseWPF-->
+<Project Sdk="Microsoft.NET.Sdk">	<!-- for UseWindowsForms-->
   <PropertyGroup>
 	<OutputType>Library</OutputType>
 	<TargetFramework>net48</TargetFramework><!--needed by RhinoCommon.dll-->
@@ -13,18 +13,30 @@
 	<AssemblyName>Euclid.Rhino</AssemblyName>
 	<AssemblyTitle>Euclid.Rhino</AssemblyTitle>
 	<PackageId>Euclid.Rhino</PackageId>
-	  
+    <Title>Euclid.Rhino</Title>    
+    <PackageId>Euclid.Rhino</PackageId>
+    <Version>0.3.0</Version>
+    <AssemblyVersion>0.3.0</AssemblyVersion>
+    <FileVersion>0.3.0</FileVersion>
+    <PackageReleaseNotes>
+      	- update to Euclid 0.3.0
+		- fix typos
+    </PackageReleaseNotes>
+    <Authors>GoswinR</Authors>
+    <Copyright>Goswin Rothenthal 2019</Copyright>
+    <Description>Utilities to use types from Euclid in Rhino3d</Description>
+    <PackageDescription>Utilities to use types from Euclid in Rhino3d</PackageDescription>
+
 	<Product>Rhino Interop for Euclid</Product> <!--visible in explorer-->
-	<Title>Rhino Interop for Euclid</Title>
 
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<NeutralLanguage>en</NeutralLanguage>
 
-	<Version>0.2.0</Version> 
-	<AssemblyVersion>0.2.0</AssemblyVersion> 
-	<FileVersion>0.2.0</FileVersion> 
+	<Version>0.3.0</Version> 
+	<AssemblyVersion>0.3.0</AssemblyVersion> 
+	<FileVersion>0.3.0</FileVersion> 
 
-	<PlatformTarget>x64</PlatformTarget><!--  x64 is required e.g by Rhino, don't us just 'Platform' tag-->
+	<PlatformTarget>x64</PlatformTarget> <!-- x64 is required e.g by Rhino, don't us just 'Platform' tag-->
   </PropertyGroup>
 
   <PropertyGroup>		
@@ -37,16 +49,15 @@
 	<PublishRepositoryUrl>true</PublishRepositoryUrl>
 	<PackageIcon>logo128.png</PackageIcon>
 	<!-- <SymbolPackageFormat>snupkg</SymbolPackageFormat>   -->
-	<!-- using  snupkg the readme does not pack https://github.com/NuGet/Home/issues/10791 -->
-	<PackageReadmeFile>READMEnuget.md</PackageReadmeFile>
-	<PackageDescription>Utilities to use types from Euclid in Rhino3d</PackageDescription>
-	<PackageTags>rhino3d RhinoCommon</PackageTags>
+	<!-- using snupkg the readme does not pack https://github.com/NuGet/Home/issues/10791 -->
+	<PackageReadmeFile>READMEnuget.md</PackageReadmeFile>	
+	<PackageTags>fsharp;geometry;Rhino3d;RhinoCommon</PackageTags>
   </PropertyGroup>
 
 
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="4.5.2" />
-	<PackageReference Include="Euclid" Version="0.2.0" />
+	<PackageReference Include="Euclid" Version="0.3.0" />
     <PackageReference Include="RhinoCommon" Version="6.7.18199.22081" PrivateAssets="all" ExcludeAssets="runtime" /> <!--should be the same version as Rhino.Scripting and Rhino.Scripting.Extension -->
   </ItemGroup>
 

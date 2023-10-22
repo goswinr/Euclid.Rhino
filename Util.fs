@@ -77,9 +77,9 @@ module internal ColorUtil =
         // from http://stackoverflow.com/questions/2942/hsl-in-net
         // or http://bobpowell.net/RGBHSB.aspx
         // allow some numerical error:
-        if not (-0.001 <. hue        .< 1.001) then failwithf "Eclid.Rhino.ColorUtil.fromHSL: H is bigger than 1.0 or smaller than 0.0: %f" hue
-        if not (-0.001 <. saturation .< 1.001) then failwithf "Eclid.Rhino.ColorUtil.fromHSL: S is bigger than 1.0 or smaller than 0.0: %f" saturation
-        if not (-0.001 <. luminance  .< 1.001) then failwithf "Eclid.Rhino.ColorUtil.fromHSL: L is bigger than 1.0 or smaller than 0.0: %f" luminance
+        if not (-0.001 <. hue        .< 1.001) then failwithf "Euclid.Rhino.ColorUtil.fromHSL: H is bigger than 1.0 or smaller than 0.0: %f" hue
+        if not (-0.001 <. saturation .< 1.001) then failwithf "Euclid.Rhino.ColorUtil.fromHSL: S is bigger than 1.0 or smaller than 0.0: %f" saturation
+        if not (-0.001 <. luminance  .< 1.001) then failwithf "Euclid.Rhino.ColorUtil.fromHSL: L is bigger than 1.0 or smaller than 0.0: %f" luminance
         let H = clamp01 hue
         let S = clamp01 saturation
         let L = clamp01 luminance
@@ -101,7 +101,7 @@ module internal ColorUtil =
                     | 3 -> m,   mid2,    v
                     | 4 -> mid1,   m,    v
                     | 5 -> v,      m, mid2
-                    | x -> failwithf "Eclid.Rhino.ColorUtil.fromHSL: Error in internal HLS Transform, sextant is %d at Hue=%g, Saturation=%g, Luminance=%g" x H S L
+                    | x -> failwithf "Euclid.Rhino.ColorUtil.fromHSL: Error in internal HLS Transform, sextant is %d at Hue=%g, Saturation=%g, Luminance=%g" x H S L
             else
                 L,L,L // default to gray value
         Color (byte(round(255.* r)) ,  byte(round(255.* g)) , byte(round(255.* b)) )
@@ -189,22 +189,22 @@ module internal UtilLayer =
     /// Raise exceptions if short layer-name is not valid
     /// it may not contain :: or control characters
     let internal failOnBadShortLayerName(name:string, fullPath:string) : unit= 
-        if isNull name then failwithf "Eclid.Rhino.UtilLayer : %s: null string as layer name in '%s'" eVSLN fullPath
+        if isNull name then failwithf "Euclid.Rhino.UtilLayer : %s: null string as layer name in '%s'" eVSLN fullPath
 
         if String.IsNullOrWhiteSpace name then // to cover for StringSplitOptions.None
-            failwithf "Eclid.Rhino.UtilLayer : %s Empty or just whitespace string as layer name in '%s'" eVSLN fullPath
+            failwithf "Euclid.Rhino.UtilLayer : %s Empty or just whitespace string as layer name in '%s'" eVSLN fullPath
         
         if name.Contains "::" then
-            failwithf "Eclid.Rhino.UtilLayer : %s: Short layer name '%s' shall not contains two colons (::).  in '%s'" eVSLN name fullPath
+            failwithf "Euclid.Rhino.UtilLayer : %s: Short layer name '%s' shall not contains two colons (::).  in '%s'" eVSLN name fullPath
         
          
         if not<| isAcceptableStringId(name, false) then 
-                failwithf "Eclid.Rhino.UtilLayer : %s: Short layer name '%s' is invalid. It may not include line returns, tabs, and leading or trailing whitespace. in '%s'" eVSLN  name fullPath
+                failwithf "Euclid.Rhino.UtilLayer : %s: Short layer name '%s' is invalid. It may not include line returns, tabs, and leading or trailing whitespace. in '%s'" eVSLN  name fullPath
        
         match Char.GetUnicodeCategory(name.[0]) with
         | UnicodeCategory.OpenPunctuation 
         | UnicodeCategory.ClosePunctuation ->  // { [ ( } ] ) don't work at start of layer name
-            failwithf "Eclid.Rhino.UtilLayer : %s: Short layer name '%s' may not start with a '%c' in '%s'" eVSLN name name.[0] fullPath
+            failwithf "Euclid.Rhino.UtilLayer : %s: Short layer name '%s' may not start with a '%c' in '%s'" eVSLN name name.[0] fullPath
         | _ -> ()
 
     let internal getParents(lay:Layer) = 
@@ -212,14 +212,14 @@ module internal UtilLayer =
             if l.ParentLayerId = Guid.Empty then ps
             else
             let pl = State.Doc.Layers.FindId(l.ParentLayerId)
-            if isNull pl then failwithf "Eclid.Rhino.UtilLayer.getParents : ParentLayerId not found in layers"
+            if isNull pl then failwithf "Euclid.Rhino.UtilLayer.getParents : ParentLayerId not found in layers"
             find pl (pl::ps)
         find lay []
 
     let internal visibleSetTrue(lay:Layer, forceVisible:bool) : unit = 
         if not lay.IsVisible then
             if forceVisible then
-                if not (State.Doc.Layers.ForceLayerVisible(lay.Id)) then failwithf "Eclid.Rhino.UtilLayer.visibleSetTrue Failed to turn on sub-layers of layer  %s"  lay.FullPath
+                if not (State.Doc.Layers.ForceLayerVisible(lay.Id)) then failwithf "Euclid.Rhino.UtilLayer.visibleSetTrue Failed to turn on sub-layers of layer  %s"  lay.FullPath
             else
                 lay.SetPersistentVisibility(true)
 
@@ -265,18 +265,18 @@ module internal UtilLayer =
         match State.Doc.Layers.FindByFullPath(name, RhinoMath.UnsetIntIndex) with
         | RhinoMath.UnsetIntIndex ->
             match name with
-            | null -> failwithf "Eclid.Rhino.UtilLayer.getOrCreateLayer: Cannot get or create layer from null string"
-            | ""   -> failwithf "Eclid.Rhino.UtilLayer.getOrCreateLayer: Cannot get or create layer from empty string"
+            | null -> failwithf "Euclid.Rhino.UtilLayer.getOrCreateLayer: Cannot get or create layer from null string"
+            | ""   -> failwithf "Euclid.Rhino.UtilLayer.getOrCreateLayer: Cannot get or create layer from empty string"
             | _ ->
                 match name.Split( [|"::"|], StringSplitOptions.None) with // TODO or use StringSplitOptions.RemoveEmptyEntries ??
-                | [| |] -> failwithf "Eclid.Rhino.UtilLayer.getOrCreateLayer: Cannot get or create layer for name: '%s'" name
+                | [| |] -> failwithf "Euclid.Rhino.UtilLayer.getOrCreateLayer: Cannot get or create layer for name: '%s'" name
                 | ns ->
                     let rec createLayer(nameList, prevId, prevIdx, root) : int = 
                         match nameList with
                         | [] -> prevIdx // exit recursion
                         | branch :: rest ->
                             if String.IsNullOrWhiteSpace branch then // to cover for StringSplitOptions.None
-                                failwithf "Eclid.Rhino.UtilLayer.getOrCreateLayer: A segment falls into String.IsNullOrWhiteSpace. Cannot get or create layer for name: '%s'" name
+                                failwithf "Euclid.Rhino.UtilLayer.getOrCreateLayer: A segment falls into String.IsNullOrWhiteSpace. Cannot get or create layer for name: '%s'" name
                             let fullPath = if root="" then branch else root + "::" + branch
                             match State.Doc.Layers.FindByFullPath(fullPath, RhinoMath.UnsetIntIndex) with
                             | RhinoMath.UnsetIntIndex -> // actually create layer:

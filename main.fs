@@ -490,7 +490,7 @@ module RhinoIntegration =
             let b: Geometry.BoundingBox = bbox.RhBBox
             let m = Mesh.CreateFromBox(b, 1, 1, 1)
             let g = State.Doc.Objects.AddMesh(m)
-            if g = Guid.Empty then failwithf "Eclid.Rhino.BBox.drawMesh failed for %O" bbox
+            if g = Guid.Empty then failwithf "Euclid.Rhino.BBox.drawMesh failed for %O" bbox
             g
 
         /// Convert Euclid the 3D Bounding Box to a Rhino bounding box .
@@ -534,7 +534,7 @@ module RhinoIntegration =
             let b: Geometry.Box = box.RhBox
             let m = Mesh.CreateFromBox(b, 1, 1, 1)
             let g = State.Doc.Objects.AddMesh(m)
-            if g = Guid.Empty then failwithf "Eclid.Rhino.Box.drawMesh failed for %O" box
+            if g = Guid.Empty then failwithf "Euclid.Rhino.Box.drawMesh failed for %O" box
             g
             
 
@@ -653,10 +653,10 @@ module RhinoIntegration =
         /// Try to create a Euclid Loop with minimum segment length and snapping tolerance from a Guid of a Rhino PolylineCurve.
         static member createOfRhGuid minSegLen snapTol (guid:System.Guid) : Loop = 
             let obj = State.Doc.Objects.FindId(guid) 
-            if isNull obj then failwithf "Eclid.Rhino.Rs.Loop.createOfRhGuid: %O not found"  guid            
+            if isNull obj then failwithf "Euclid.Rhino.Rs.Loop.createOfRhGuid: %O not found"  guid            
             match obj.Geometry with
             | :? Curve as curve -> 
-                if not curve.IsClosed then failwithf "Eclid.Rhino.Rs.Loop.createOfRhGuid: Curve not closed %A " guid
+                if not curve.IsClosed then failwithf "Euclid.Rhino.Rs.Loop.createOfRhGuid: Curve not closed %A " guid
                 let rc, polyline = curve.TryGetPolyline()
                 if rc then  
                     polyline
@@ -664,14 +664,14 @@ module RhinoIntegration =
                     |> Array.ofSeq
                     |> Loop.create minSegLen snapTol
                 else                 
-                    failwithf "Eclid.Rhino.Rs.Loop.createOfRhGuid: guid does not reference a polyline. guid:'%A' " guid
+                    failwithf "Euclid.Rhino.Rs.Loop.createOfRhGuid: guid does not reference a polyline. guid:'%A' " guid
                                 
-            | _ -> failwithf "Eclid.Rhino.Rs.Loop.createOfRhGuid: failed on: %O " guid
+            | _ -> failwithf "Euclid.Rhino.Rs.Loop.createOfRhGuid: failed on: %O " guid
             
 
         /// Try to create a Euclid Loop with minimum segment length and snapping tolerance from a Rhino PolylineCurve Geometry.
         static member createOfRhPoly minSegLen snapTol (poly:PolylineCurve) : Loop =  
-            if not poly.IsClosed then failwithf "Eclid.Rhino.Rs.Loop.createOfRhPoly: PolylineCurve not closed " 
+            if not poly.IsClosed then failwithf "Euclid.Rhino.Rs.Loop.createOfRhPoly: PolylineCurve not closed " 
             [| for i = 0 to poly.PointCount - 1 do 
                 let p = poly.Point(i)  
                 Pt(p.X, p.Y) |]

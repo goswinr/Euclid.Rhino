@@ -17,12 +17,16 @@ The version number of `Euclid.Rhino` is aligned with the referenced version of `
 
 ### Documentation
 
-for now see [full API documentation on fuget.org](https://www.fuget.org/packages/Euclid.Rhino)
+For now see [full API documentation on fuget.org](https://www.fuget.org/packages/Euclid.Rhino)
 
 ### License
 [MIT](https://raw.githubusercontent.com/goswinr/Euclid.Rhino/main/LICENSE.txt)
 
 ### Release Notes
+
+`0.3.0`
+- update to Euclid 0.3.0
+- fix typos
 
 `0.2.0`
 - align with Euclid 0.2.0
