@@ -458,7 +458,7 @@ module RhinoIntegration =
         static member drawPolyLine (rect:BRect) = Rs.AddPolyline(rect.RhPolyline)
         
         /// Convert Euclid 2D Bounding Rectangle to a closed Rhino Polyline.
-        member r.RhPolyline =  new Polyline(r.CornersLooped |> Seq.map ( fun p -> p.RhPt) )
+        member r.RhPolyline =  new Polyline(r.PointsLooped |> Seq.map ( fun p -> p.RhPt) )
 
 
     type BBox with
@@ -483,7 +483,7 @@ module RhinoIntegration =
         ///   0 MinPt         1
         static member drawPolyLine (bbox:BBox) = 
             let pts = seq{ bbox.Pt0; bbox.Pt1; bbox.Pt2; bbox.Pt3; bbox.Pt0; bbox.Pt4; bbox.Pt5; bbox.Pt6; bbox.Pt7; bbox.Pt4 }
-            Rs.AddPolyline(bbox.Corners |> Seq.map ( fun p -> p.RhPt))
+            Rs.AddPolyline(bbox.Points |> Seq.map ( fun p -> p.RhPt))
 
         /// Draw the Euclid 3D Bounding Box  in Rhino as Mesh on current layer.
         static member drawMesh (bbox:BBox) = 
@@ -527,7 +527,7 @@ module RhinoIntegration =
         ///   0               1
         static member drawPolyLine (box:Euclid.Box) = 
             let pts = seq{ box.Pt0; box.Pt1; box.Pt2; box.Pt3; box.Pt0; box.Pt4; box.Pt5; box.Pt6; box.Pt7; box.Pt4 }
-            Rs.AddPolyline(box.Corners |> Seq.map ( fun p -> p.RhPt))
+            Rs.AddPolyline(box.Points |> Seq.map ( fun p -> p.RhPt))
 
         /// Draw the Euclid 3D Box in Rhino as Mesh on current layer.
         static member drawMesh (box:Euclid.Box) = 
@@ -603,12 +603,12 @@ module RhinoIntegration =
         
         /// Convert Euclid 3D Rectangle to a closed Rhino Polyline.
         member r.RhPolyline = 
-            let pts = r.CornersLooped |> Seq.map Pnt.toRhPt
+            let pts = r.PointsLooped |> Seq.map Pnt.toRhPt
             new Geometry.Polyline(pts) 
 
         /// Convert Euclid 2D Rectangle to a closed Rhino PolylineCurve.
         member r.RhPolylineCurve = 
-            let pts = r.CornersLooped |> Seq.map Pnt.toRhPt
+            let pts = r.PointsLooped |> Seq.map Pnt.toRhPt
             new Geometry.PolylineCurve(pts) 
         
         /// Convert Euclid 2D Rectangle to a Rhino Surface.
@@ -619,12 +619,12 @@ module RhinoIntegration =
         
         /// Convert Euclid 2D Rectangle to a closed Rhino Polyline in World XY Plane.
         member r.RhPolyline = 
-            let pts = r.CornersLooped |> Seq.map Pt.toRhPt
+            let pts = r.PointsLooped |> Seq.map Pt.toRhPt
             new Geometry.Polyline(pts) 
 
         /// Convert Euclid 2D Rectangle to a closed Rhino PolylineCurve in World XY Plane.
         member r.RhPolylineCurve = 
-            let pts = r.CornersLooped |> Seq.map Pt.toRhPt
+            let pts = r.PointsLooped |> Seq.map Pt.toRhPt
             new Geometry.PolylineCurve(pts) 
         
         /// Convert Euclid 2D Rectangle to a Rhino Surface in World XY Plane.
@@ -671,17 +671,18 @@ module RhinoIntegration =
 
         /// Try to create a Euclid Loop with minimum segment length and snapping tolerance from a Rhino PolylineCurve Geometry.
         static member createOfRhPoly minSegLen snapTol (poly:PolylineCurve) : Loop =  
-            if not poly.IsClosed then failwithf "Euclid.Rhino.Rs.Loop.createOfRhPoly: PolylineCurve not closed " 
+            if not poly.IsClosed then failwithf "Euclid.Rhino.Rs.Loop.createOfRhPoly: PolylineCurve is not closed " 
             [| for i = 0 to poly.PointCount - 1 do 
                 let p = poly.Point(i)  
                 Pt(p.X, p.Y) |]
             |> Loop.create minSegLen snapTol
+
     
     /// Dependency injection for debugging in Rhino:
     /// The library Euclid has no reference to Rhino. 
     /// However it has these mutable functions to display debug information in case of errors.
     /// By default these functions do nothing.
-    /// Here, upon opening Euclid.Rhino they get replaced with implementations that use Rhino for drawing:    
+    /// Here, after calling setupDebugFunctions() Euclid.Rhino they get replaced with implementations that use Rhino for drawing:    
     let setupDebugFunctions () =   
         Debug2D.drawDot         <- fun msg pt        -> Rs.AddTextDot(msg, pt.X, pt.Y, 0.0)                 |> Rs.setLayer "Euclid.Debug2D::drawDot"
         Debug2D.drawPt          <- fun pt            -> Rs.AddPoint(pt.X, pt.Y, 0.0)                        |> Rs.setLayer "Euclid.Debug2D::drawPt"
@@ -694,23 +695,23 @@ module RhinoIntegration =
         Debug2D.drawPtLayer          <- fun (pt:Pt, layer:string)             -> Rs.AddPoint(pt.X, pt.Y, 0.0)                       |> Rs.setLayer layer
         Debug2D.drawLineLayer        <- fun (ln:Line2D, layer:string)         -> Rs.AddLine2D(ln.FromX, ln.FromY, ln.ToX, ln.ToY)   |> Rs.setLayer layer
         Debug2D.drawPolyLineLayer    <- fun (ps:seq<Pt>, layer:string)        -> Rs.AddPolyline(ps |> Seq.map Pt.toRhPt )           |> Rs.setLayer layer
-        Debug2D.drawLineFromToLayer  <- fun (a:Pt, b:Pt, layer:string)         -> Rs.AddLine2D(a.X, a.Y, b.X, b.Y )                 |> Rs.setLayer layer
+        Debug2D.drawLineFromToLayer  <- fun (a:Pt, b:Pt, layer:string)        -> Rs.AddLine2D(a.X, a.Y, b.X, b.Y )                  |> Rs.setLayer layer
 
-        Debug3D.drawDot          <- fun msg pt        -> Rs.AddTextDot(msg, pt.X, pt.Y, pt.Z)                               |> Rs.setLayer "Euclid.Debug2D::drawDot"
-        Debug3D.drawPt           <- fun pt            -> Rs.AddPoint(pt.X, pt.Y, pt.Z)                                      |> Rs.setLayer "Euclid.Debug2D::drawPt"
-        Debug3D.drawLine         <- fun (ln:Line3D)   -> Rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ)   |> Rs.setLayer "Euclid.Debug2D::drawLine"
-        Debug3D.drawLineFromTo   <- fun (a:Pnt, b:Pnt)  -> Rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z )                        |> Rs.setLayer "Euclid.Debug2D::drawLine"
-        Debug3D.drawPolyLine     <- fun (ps:seq<Pnt>)  -> Rs.AddPolyline(ps |> Seq.map Pnt.toRhPt)                          |> Rs.setLayer "Euclid.Debug2D::drawPolyLine"
+        Debug3D.drawDot          <- fun msg pt          -> Rs.AddTextDot(msg, pt.X, pt.Y, pt.Z)                               |> Rs.setLayer "Euclid.Debug2D::drawDot"
+        Debug3D.drawPt           <- fun pt              -> Rs.AddPoint(pt.X, pt.Y, pt.Z)                                      |> Rs.setLayer "Euclid.Debug2D::drawPt"
+        Debug3D.drawLine         <- fun (ln:Line3D)     -> Rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ)   |> Rs.setLayer "Euclid.Debug2D::drawLine"
+        Debug3D.drawLineFromTo   <- fun (a:Pnt, b:Pnt)  -> Rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z )                          |> Rs.setLayer "Euclid.Debug2D::drawLine"
+        Debug3D.drawPolyLine     <- fun (ps:seq<Pnt>)   -> Rs.AddPolyline(ps |> Seq.map Pnt.toRhPt)                           |> Rs.setLayer "Euclid.Debug2D::drawPolyLine"
 
         // pt:Pnt -> msg:string -> layer:string
-        Debug3D.drawDotLayer        <- fun (pt:Pnt, msg:string, layer:string) -> Rs.AddTextDot(msg, pt.X, pt.Y, pt.Z)                               |> Rs.setLayer layer
+        Debug3D.drawDotLayer        <- fun (pt:Pnt, msg:string, layer:string)  -> Rs.AddTextDot(msg, pt.X, pt.Y, pt.Z)                              |> Rs.setLayer layer
         Debug3D.drawPtLayer         <- fun (pt:Pnt, layer:string)              -> Rs.AddPoint(pt.X, pt.Y, pt.Z)                                     |> Rs.setLayer layer
         Debug3D.drawLineLayer       <- fun (ln:Line3D, layer:string)           -> Rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ)  |> Rs.setLayer layer
-        Debug3D.drawLineFromToLayer <- fun (a:Pnt, b:Pnt, layer:string)         -> Rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z )                        |> Rs.setLayer layer
+        Debug3D.drawLineFromToLayer <- fun (a:Pnt, b:Pnt, layer:string)        -> Rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z )                         |> Rs.setLayer layer
         Debug3D.drawPolyLineLayer   <- fun (ps:seq<Pnt>, layer:string)         -> Rs.AddPolyline(ps |> Seq.map Pnt.toRhPt)                          |> Rs.setLayer layer
 
 
 
-    //do setupDebugFunctions () // TODO it seems that this gets NOT called just by opening the module !
+    //do setupDebugFunctions () // this gets NOT called just by opening the module ! The 'do' part of a module only gets called when in a script 
 
 

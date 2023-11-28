@@ -22,11 +22,12 @@ For now see [full API documentation on fuget.org](https://www.fuget.org/packages
 [MIT](https://raw.githubusercontent.com/goswinr/Euclid.Rhino/main/LICENSE.txt)
 
 ### Release Notes
+`0.4.0`
+ - update to pull in Euclid 0.4.0
 
 `0.3.0`
 - update to Euclid 0.3.0
 - fix typos
-
 
 `0.2.0`
 - align with Euclid 0.2.0
