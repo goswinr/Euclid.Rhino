@@ -15,11 +15,11 @@
 	<PackageId>Euclid.Rhino</PackageId>
     <Title>Euclid.Rhino</Title>    
     <PackageId>Euclid.Rhino</PackageId>
-    <Version>0.4.0</Version>
-    <AssemblyVersion>0.4.0</AssemblyVersion>
-    <FileVersion>0.4.0</FileVersion>
+    <Version>0.4.1</Version>
+    <AssemblyVersion>0.4.1</AssemblyVersion>
+    <FileVersion>0.4.1</FileVersion>
     <PackageReleaseNotes>
-      - update to pull in Euclid 0.4.0
+      - update to pull in Euclid 0.4.1
     </PackageReleaseNotes>
     <Authors>GoswinR</Authors>
     <Copyright>Goswin Rothenthal 2019</Copyright>
@@ -53,7 +53,7 @@
 
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="4.5.2" />
-	<PackageReference Include="Euclid" Version="0.4.0" />
+	<PackageReference Include="Euclid" Version="0.4.1" />
     <PackageReference Include="RhinoCommon" Version="6.7.18199.22081" PrivateAssets="all" ExcludeAssets="runtime" /> <!--should be the same version as Rhino.Scripting and Rhino.Scripting.Extension -->
   </ItemGroup>
 

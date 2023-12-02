@@ -23,6 +23,9 @@ For now see [full API documentation on fuget.org](https://www.fuget.org/packages
 [MIT](https://raw.githubusercontent.com/goswinr/Euclid.Rhino/main/LICENSE.txt)
 
 ### Release Notes
+`0.4.1`
+- update to pull in Euclid 0.4.1
+
 `0.4.0`
  - update to pull in Euclid 0.4.0
 
