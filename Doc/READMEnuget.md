@@ -16,13 +16,21 @@ The version number of `Euclid.Rhino` is aligned with the referenced version of `
 
 ### Documentation
 
-For now see [full API documentation on fuget.org](https://www.fuget.org/packages/Euclid.Rhino)
+Just open the Euclid namespace. 
+`open Euclid`
+This will auto-open the module  `AutoOpenRhinoIntegration`
+You will get access to all the extension methods for Rhino integration.
+
+For now see [full API documentation on fuget.org](https://www.fuget.org/packages/Euclid.Rhino) 
+or look at [main.fs](https://github.com/goswinr/Euclid.Rhino/blob/main/main.fs) for the source code.
 
 ### License
 [MIT](https://raw.githubusercontent.com/goswinr/Euclid.Rhino/main/LICENSE.txt)
 
 ### Release Notes
-
+`0.5.0`
+- update to pull in Euclid 0.5.0
+- auto open RhinoIntegration module
 
 `0.4.1`
 - update to pull in Euclid 0.4.1

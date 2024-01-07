@@ -7,8 +7,9 @@ open Rhino.Geometry
 /// If this module is opened then you can
 /// convert Rhino points and vectors and Euclid points and vectors to each other 
 /// via new static and instance members on these types.
-/// Call setupDebugFunctions() to set the functions on the modules Euclid.Debug3D and Euclid.Debug2D to draw in Rhino.
-module RhinoIntegration =    
+/// Call setupEuclidDebugFunctions() to set the functions on the modules Euclid.Debug3D and Euclid.Debug2D to draw in Rhino.
+[<AutoOpen>]
+module AutoOpenRhinoIntegration =    
     
     
     // -----------------------------------------------------------------------
@@ -682,8 +683,8 @@ module RhinoIntegration =
     /// The library Euclid has no reference to Rhino. 
     /// However it has these mutable functions to display debug information in case of errors.
     /// By default these functions do nothing.
-    /// Here, after calling setupDebugFunctions() Euclid.Rhino they get replaced with implementations that use Rhino for drawing:    
-    let setupDebugFunctions () =   
+    /// Here, after calling setupEuclidDebugFunctions() in the Euclid.Rhino.dll they get replaced with implementations that use Rhino for drawing:    
+    let setupEuclidDebugFunctions () =   
         Debug2D.drawDot         <- fun msg pt        -> Rs.AddTextDot(msg, pt.X, pt.Y, 0.0)                 |> Rs.setLayer "Euclid.Debug2D::drawDot"
         Debug2D.drawPt          <- fun pt            -> Rs.AddPoint(pt.X, pt.Y, 0.0)                        |> Rs.setLayer "Euclid.Debug2D::drawPt"
         Debug2D.drawLine        <- fun (ln)          -> Rs.AddLine2D(ln.FromX, ln.FromY, ln.ToX, ln.ToY)    |> Rs.setLayer "Euclid.Debug2D::drawLine"
@@ -712,6 +713,7 @@ module RhinoIntegration =
 
 
 
-    //do setupDebugFunctions () // this gets NOT called just by opening the module ! The 'do' part of a module only gets called when in a script 
+    //do setupEuclidDebugFunctions () // this gets NOT called just by opening the module ! The 'do' part of a module only gets called when in a script 
 
-
+    [<Obsolete("renamed to setupEuclidDebugFunctions")>]
+    let setupDebugFunctions () = setupEuclidDebugFunctions() // this gets called just by opening the module ! The 'do' part of a module only gets called when in a script
