@@ -29,6 +29,10 @@ or look at [main.fs](https://github.com/goswinr/Euclid.Rhino/blob/main/main.fs) 
 [MIT](https://raw.githubusercontent.com/goswinr/Euclid.Rhino/main/LICENSE.txt)
 
 ### Release Notes
+`0.9.0`
+- update to pull in Euclid 0.9.0
+- net7 support
+
 `0.7.0`
 - update to pull in Euclid 0.7.0
 
