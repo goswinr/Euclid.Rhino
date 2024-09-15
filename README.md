@@ -22,6 +22,13 @@ Just open the Euclid namespace.
 This will auto-open the module  `AutoOpenRhinoIntegration`
 You will get access to all the extension methods for Rhino integration.
 
+Call `setupEuclidDebugFunctions()` once to replace the default debug drawing functions with Rhino specific ones.
+The library Euclid has no reference to Rhino.
+However it has these mutable functions to display debug information in case of errors.
+By default these functions do nothing.
+After calling `setupEuclidDebugFunctions()` they get replaced with implementations that use Rhino for drawing.
+
+
 For now see [full API documentation on fuget.org](https://www.fuget.org/packages/Euclid.Rhino)
 or look at [main.fs](https://github.com/goswinr/Euclid.Rhino/blob/main/main.fs) for the source code.
 
@@ -29,6 +36,11 @@ or look at [main.fs](https://github.com/goswinr/Euclid.Rhino/blob/main/main.fs) 
 [MIT](https://raw.githubusercontent.com/goswinr/Euclid.Rhino/main/LICENSE.txt)
 
 ### Release Notes
+
+`0.10.0`
+- update to pull in Euclid 0.10.0
+
+
 `0.9.0`
 - update to pull in Euclid 0.9.0
 - net7 support

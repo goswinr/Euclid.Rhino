@@ -2,7 +2,15 @@
 <Project Sdk="Microsoft.NET.Sdk">	<!-- for UseWindowsForms-->
   <PropertyGroup>
 	<OutputType>Library</OutputType>
-	<TargetFrameworks>net48;net7</TargetFrameworks><!-- ;net7.0  48 needed by RhinoCommon.dll-->
+	<!-- <TargetFramework>net48</TargetFramework> -->
+    <TargetFrameworks>net48;net7.0</TargetFrameworks>
+    <!-- <NoWarn>NU1701</NoWarn> -->
+    <!-- https://discourse.mcneel.com/t/rhino-inside-net-core-7-0/166059/7 -->
+    <!-- targeting net 7 in still not recommended, (Aug 2024) see
+    https://developer.rhino3d.com/guides/rhinocommon/moving-to-dotnet-7/#migrating-your-plugin
+    targeting net 7 actually fails to find the System.Drawing.Bitmap reference during build even if System.Drawing.Common is included.
+    -->
+
 	<!-- <UseWPF>false</UseWPF> -->
 	<!--<UseWindowsForms>true</UseWindowsForms>   because Rhino.Scripting has ist too-->
 
@@ -15,12 +23,12 @@
 	<PackageId>Euclid.Rhino</PackageId>
     <Title>Euclid.Rhino</Title>
     <PackageId>Euclid.Rhino</PackageId>
-    <Version>0.9.0</Version>
-    <AssemblyVersion>0.9.0</AssemblyVersion>
-    <FileVersion>0.9.0</FileVersion>
+    <Version>0.10.0</Version>
+    <AssemblyVersion>0.10.0</AssemblyVersion>
+    <FileVersion>0.10.0</FileVersion>
     <PackageReleaseNotes>
-      - update to pull in Euclid  0.9.0
-	  - add support for net7
+      - update to pull in Euclid 0.10.0
+	  - remove support for net7
     </PackageReleaseNotes>
     <Authors>GoswinR</Authors>
     <Copyright>Goswin Rothenthal 2019</Copyright>
@@ -44,7 +52,7 @@
 	<PackageProjectUrl>https://github.com/goswinr/Euclid.Rhino</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/goswinr/Euclid.Rhino</RepositoryUrl>
 	<PublishRepositoryUrl>true</PublishRepositoryUrl>
-	<!--NU1701: suppress warning about RhinoCommon not beeing build for net7: https://discourse.mcneel.com/t/rhino-inside-net-core-7-0/166059/7-->
+	<!--NU1701: suppress warning about RhinoCommon not being build for net7: https://discourse.mcneel.com/t/rhino-inside-net-core-7-0/166059/7-->
 	<!-- <NoWarn>NU1701</NoWarn>  -->
 	<PackageIcon>logo128.png</PackageIcon>
 	<!-- <SymbolPackageFormat>snupkg</SymbolPackageFormat>   -->
@@ -56,7 +64,7 @@
 
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="5.0.2" />
-	<PackageReference Include="Euclid" Version="0.9.0" />
+	<PackageReference Include="Euclid" Version="0.10.0" />
     <PackageReference Include="RhinoCommon" Version="6.7.18199.22081" PrivateAssets="all" ExcludeAssets="runtime" /> <!--should be the same version as Rhino.Scripting and Rhino.Scripting.Extension -->
   </ItemGroup>
 
