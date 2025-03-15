@@ -2,8 +2,9 @@
 <Project Sdk="Microsoft.NET.Sdk">	<!-- for UseWindowsForms-->
   <PropertyGroup>
 	<OutputType>Library</OutputType>
-	<!-- <TargetFramework>net48</TargetFramework> -->
-    <TargetFrameworks>net48;net7.0</TargetFrameworks>
+	<TargetFramework>net48</TargetFramework>
+
+    <!-- <TargetFrameworks>net48;net7.0</TargetFrameworks> -->
     <!-- <NoWarn>NU1701</NoWarn> -->
     <!-- https://discourse.mcneel.com/t/rhino-inside-net-core-7-0/166059/7 -->
     <!-- targeting net 7 in still not recommended, (Aug 2024) see
@@ -16,6 +17,8 @@
 
 	<LangVersion>preview</LangVersion>
 	<SatelliteResourceLanguages>en</SatelliteResourceLanguages> <!--to only have the English resources of Fsharp.Core-->
+	<DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference> <!-- so that dependabot does not fail https://github.com/dependabot/dependabot-core/issues/10883#issuecomment-2495962805 -->
+
 
 	<RootNamespace>Euclid</RootNamespace>
 	<AssemblyName>Euclid.Rhino</AssemblyName>
@@ -23,13 +26,9 @@
 	<PackageId>Euclid.Rhino</PackageId>
     <Title>Euclid.Rhino</Title>
     <PackageId>Euclid.Rhino</PackageId>
-    <Version>0.10.0</Version>
-    <AssemblyVersion>0.10.0</AssemblyVersion>
-    <FileVersion>0.10.0</FileVersion>
-    <PackageReleaseNotes>
-      - update to pull in Euclid 0.10.0
-	  - remove support for net7
-    </PackageReleaseNotes>
+
+    <!-- <Version>0.0.0</Version>  done by Ionide.KeepAChangelog.Tasks-->
+
     <Authors>GoswinR</Authors>
     <Copyright>Goswin Rothenthal 2019</Copyright>
     <Description>Utilities to use types from Euclid in Rhino3d</Description>
@@ -41,42 +40,60 @@
 	<NeutralLanguage>en</NeutralLanguage>
 	<Configuration>Release</Configuration>
 
-	<PlatformTarget>x64</PlatformTarget> <!-- x64 is required e.g by Rhino, don't us just 'Platform' tag-->
+	<PlatformTarget>x64</PlatformTarget> <!-- x64 is required e.g by Rhino, dont us just 'Platform' tag-->
   </PropertyGroup>
 
   <PropertyGroup>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<IncludeSymbols>true</IncludeSymbols>
-	<RepositoryType>git</RepositoryType>
-	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<PackageProjectUrl>https://github.com/goswinr/Euclid.Rhino</PackageProjectUrl>
-	<RepositoryUrl>https://github.com/goswinr/Euclid.Rhino</RepositoryUrl>
-	<PublishRepositoryUrl>true</PublishRepositoryUrl>
-	<!--NU1701: suppress warning about RhinoCommon not being build for net7: https://discourse.mcneel.com/t/rhino-inside-net-core-7-0/166059/7-->
-	<!-- <NoWarn>NU1701</NoWarn>  -->
-	<PackageIcon>logo128.png</PackageIcon>
-	<!-- <SymbolPackageFormat>snupkg</SymbolPackageFormat>   -->
-	<!-- using snupkg the readme does not pack https://github.com/NuGet/Home/issues/10791 -->
-	<PackageReadmeFile>READMEnuget.md</PackageReadmeFile>
 	<PackageTags>fsharp;geometry;Rhino3d;RhinoCommon</PackageTags>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <!-- <SymbolPackageFormat>snupkg</SymbolPackageFormat>     -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageIcon>logo128.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <DebugType>embedded</DebugType>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <RepositoryUrl>https://github.com/goswinr/Euclid.Rhino</RepositoryUrl>
+    <FsDocsLicenseLink>https://github.com/goswinr/Euclid.Rhino/blob/main//LICENSE.md</FsDocsLicenseLink>
+    <FsDocsReleaseNotesLink>https://github.com/goswinr/Euclid.Rhino/blob/main/CHANGELOG.md</FsDocsReleaseNotesLink>
+    <PackageProjectUrl>https://goswinr.github.io/Euclid.Rhino</PackageProjectUrl>
+
+	<FsDocsFaviconSource>img/favicon.ico</FsDocsFaviconSource>
+    <FsDocsWarnOnMissingDocs>true</FsDocsWarnOnMissingDocs>
+
+    <ChangelogFile>./CHANGELOG.md</ChangelogFile>
   </PropertyGroup>
 
 
   <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="5.0.2" />
-	<PackageReference Include="Euclid" Version="0.10.0" />
-    <PackageReference Include="RhinoCommon" Version="6.7.18199.22081" PrivateAssets="all" ExcludeAssets="runtime" /> <!--should be the same version as Rhino.Scripting and Rhino.Scripting.Extension -->
+    <PackageReference Include="FSharp.Core" Version="6.0.7" />  <!-- so that dependabot does not fail, even though it is set to be excluded -->
+	<PackageReference Include="Euclid" Version="0.13.0" />
+    <PackageReference Include="RhinoCommon" Version="7.0.20314.3001" PrivateAssets="all" ExcludeAssets="runtime" /> <!--should be the same version as Rhino.Scripting and Rhino.Scripting.Extension -->
+    <PackageReference Include="Ionide.KeepAChangelog.Tasks" Version="0.1.8" PrivateAssets="all"  />
   </ItemGroup>
 
   <ItemGroup>
-	<None Include="README.md" />
-	<None Include="Doc/READMEnuget.md" Pack="true" PackagePath="" />
-	<None Include="Doc/logo128.png" Pack="true" PackagePath="" /> <!--PackagePath = "" makes the file available to nuget pack tool-->
+	<None Include="./README.md" Pack="true" PackagePath="" />
+    <None Include="./Docs/img/logo128.png" Pack="true" PackagePath="" />   <!--PackagePath = "" makes the file available to nuget pack tool-->
 
-	<Compile Include="State.fs" />
-    <Compile Include="Util.fs" />
-    <Compile Include="Rs.fs" />
-    <Compile Include="main.fs" />
+
+	<Compile Include="Src/State.fs" />
+    <Compile Include="Src/Util.fs" />
+    <Compile Include="Src/Rs.fs" />
+    <Compile Include="Src/main.fs" />
   </ItemGroup>
+
+  <Target Name="CopyReadmeToDocs" AfterTargets="Build">
+    <!-- for fsdocs to build locally -->
+    <Copy SourceFiles="./README.md" DestinationFiles="./Docs/index.md" ContinueOnError="false"/>
+  </Target>
+
+  <Target Name="WriteChangelogVersion" AfterTargets="AfterBuild"><!-- for version checks in github tag based builds -->
+    <WriteLinesToFile File="./bin/ChangelogVersion.txt" Lines="@(CurrentReleaseChangelog)" Overwrite="true" ContinueOnError="false" />
+  </Target>
 
 </Project>

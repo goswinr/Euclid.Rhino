@@ -1,13 +1,18 @@
+
+![Logo](https://raw.githubusercontent.com/goswinr/Euclid.Rhino/main/Docs/img/logo128.png)
+
 # Euclid.Rhino
+
+
 [![Euclid.Rhino on nuget.org](https://img.shields.io/nuget/v/Euclid.Rhino)](https://www.nuget.org/packages/Euclid.Rhino/)
-[![Euclid.Rhino.Rhino on fuget.org](https://www.fuget.org/packages/Euclid.Rhino/badge.svg)](https://www.fuget.org/packages/Euclid.Rhino)
+[![Build Status](https://github.com/goswinr/Euclid.Rhino/actions/workflows/build.yml/badge.svg)](https://github.com/goswinr/Euclid.Rhino/actions/workflows/build.yml)
+[![Docs Build Status](https://github.com/goswinr/Euclid.Rhino/actions/workflows/docs.yml/badge.svg)](https://github.com/goswinr/Euclid.Rhino/actions/workflows/docs.yml)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fgoswinr%2FEuclid&count_bg=%2379C83D&title_bg=%23555555&icon=github.svg&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+[![license](https://img.shields.io/github/license/goswinr/Euclid.Rhino)](LICENSE.md)
 ![code size](https://img.shields.io/github/languages/code-size/goswinr/Euclid.Rhino.svg)
-[![license](https://img.shields.io/github/license/goswinr/Euclid.Rhino)](LICENSE)
-
-![Logo](https://raw.githubusercontent.com/goswinr/Euclid.Rhino/main/Doc/logo128.png)
 
 
-This package is for using the [Euclid](https://github.com/goswinr/Euclid) geometry library in [Rhino3d](https://www.rhino3d.com/).
+This package is for using the [Euclid](https://github.com/goswinr/Euclid) geometry library in [Rhino3D](https://www.rhino3d.com/).
 
 It provides extension members for drawing Euclid geometry in Rhino.
 
@@ -32,41 +37,19 @@ After calling `setupEuclidDebugFunctions()` they get replaced with implementatio
 For now see [full API documentation on fuget.org](https://www.fuget.org/packages/Euclid.Rhino)
 or look at [main.fs](https://github.com/goswinr/Euclid.Rhino/blob/main/main.fs) for the source code.
 
-### License
-[MIT](https://raw.githubusercontent.com/goswinr/Euclid.Rhino/main/LICENSE.txt)
+## Full API Documentation
 
-### Release Notes
+[goswinr.github.io/Euclid.Rhino](https://goswinr.github.io/Euclid.Rhino)
 
-`0.10.0`
-- update to pull in Euclid 0.10.0
+## Changelog
+see [CHANGELOG.md](https://github.com/goswinr/Euclid.Rhino/blob/main/CHANGELOG.md)
+
+## Build from source
+Just run `dotnet build` in the root directory.
 
 
-`0.9.0`
-- update to pull in Euclid 0.9.0
-- net7 support
-
-`0.7.0`
-- update to pull in Euclid 0.7.0
-
-`0.6.1`
-- update to pull in Euclid 0.6.1
-
-`0.5.0`
-- update to pull in Euclid 0.5.0
-- auto open RhinoIntegration module
-
-`0.4.1`
-- update to pull in Euclid 0.4.1
-
-`0.4.0`
- - update to pull in Euclid 0.4.0
-
-`0.3.0`
-- update to Euclid 0.3.0
-- fix typos
-
-`0.2.0`
-- align with Euclid 0.2.0
+## License
+[MIT](https://github.com/goswinr/Euclid.Rhino/blob/main/LICENSE.md)
 
 
 
