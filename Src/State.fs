@@ -7,12 +7,12 @@ open Rhino
 open Rhino.Runtime
 
 
-type Delegate1 = delegate of unit -> unit
+type internal Delegate = delegate of unit -> unit
 
 /// An internal static class to hold current state like active Rhino document.
 [<AbstractClass; Sealed>] //static class, use these attributes to match C# static class and make in visible in C# // https://stackoverflow.com/questions/13101995/defining-static-classes-in-f
-type internal State private () = 
- 
+type internal State private () =
+
 
     /// The current active Rhino document (= the file currently open)
     static let mutable doc : RhinoDoc = null
@@ -25,12 +25,12 @@ type internal State private () =
 
     /// keep the reference to the active Document (3d file ) updated.
     static let updateDoc (document:RhinoDoc) =    doc <- document //Rhino.RhinoDoc.ActiveDoc
-        
+
 
     // -------Events: --------------------
 
-    static let setupEventsInSync() = 
-        let delg = new Delegate1( fun () -> RhinoDoc.ActiveDocumentChanged.Add (fun args -> updateDoc args.Document) )
+    static let setupEventsInSync() =
+        let delg = new Delegate( fun () -> RhinoDoc.ActiveDocumentChanged.Add (fun args -> updateDoc args.Document) )
         try
             RhinoApp.InvokeOnUiThread (delg)
         with e ->
@@ -39,13 +39,13 @@ type internal State private () =
             RhinoApp.WriteLine err
 
 
-    static let initState()= 
+    static let initState()=
         if not HostUtils.RunningInRhino then
             failwithf "Euclid.Rhino.State.initState Failed to find the active Rhino document, is this dll running hosted inside the Rhino process? "
         else
             //RhinoSync.Initialize()
             updateDoc(RhinoDoc.ActiveDoc)  // do first
-            setupEventsInSync()             // do after Doc is set up            
+            setupEventsInSync()             // do after Doc is set up
 
 
     //----------------------------------------------------------------
@@ -54,6 +54,6 @@ type internal State private () =
 
     /// The current active Rhino document (= the file currently open)
     static member Doc
-        with get()= 
+        with get()=
             if isNull doc then initState()
             doc

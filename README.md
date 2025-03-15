@@ -12,27 +12,27 @@
 ![code size](https://img.shields.io/github/languages/code-size/goswinr/Euclid.Rhino.svg)
 
 
-This package is for using the [Euclid](https://github.com/goswinr/Euclid) geometry library in [Rhino3D](https://www.rhino3d.com/).\
-It provides extension members for drawing Euclid geometry in Rhino.\
-And for converting Rhino geometry to Euclid geometry. And vice versa.\
+This package is for using the [Euclid](https://github.com/goswinr/Euclid) geometry library in [Rhino3D](https://www.rhino3d.com/).<br>
+It provides extension members for drawing Euclid geometry in Rhino.<br>
+And for converting Rhino geometry to Euclid geometry. And vice versa.<br>
 The version number of `Euclid.Rhino` is aligned with the referenced version of `Euclid`.
 
 ### Documentation
 
-Just open the Euclid namespace.\
-`open Euclid`\
-This will auto-open the module  `AutoOpenRhinoIntegration`\
+Just open the Euclid namespace.<br>
+`open Euclid`<br>
+This will auto-open the module  `AutoOpenRhinoIntegration`<br>
 You will get access to all the extension methods for Rhino integration.
 
-Call `setupEuclidDebugFunctions()` once to replace the default debug drawing functions with Rhino specific ones.\
-The library Euclid has no reference to Rhino.\
-However it has these mutable functions to display debug information in case of errors.\
-By default these functions do nothing.\
+Call `setupEuclidDebugFunctions()` once to replace the default debug drawing functions with Rhino specific ones.<br>
+The library Euclid has no reference to Rhino.<br>
+However it has these mutable functions to display debug information in case of errors.<br>
+By default these functions do nothing.<br>
 After calling `setupEuclidDebugFunctions()` they get replaced with implementations that use Rhino for drawing.
 
 
-For the main functions look at [main.fs](https://github.com/goswinr/Euclid.Rhino/blob/main/main.fs) .\
-Or go to [goswinr.github.io/Euclid.Rhino](https://goswinr.github.io/Euclid.Rhino/reference/index.html) for the full documentation.
+For the main functions look at [main.fs](https://github.com/goswinr/Euclid.Rhino/blob/main/main.fs) .<br>
+Or go to [goswinr.github.io/Euclid.Rhino](https://goswinr.github.io/Euclid.Rhino/reference/euclid-autoopenrhinointegration.html) for the full documentation.
 
 ## Changelog
 see [CHANGELOG.md](https://github.com/goswinr/Euclid.Rhino/blob/main/CHANGELOG.md)
