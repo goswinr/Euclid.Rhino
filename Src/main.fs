@@ -120,10 +120,10 @@ module AutoOpenRhinoIntegration =
     type Geometry.Box with
 
         /// Convert a Rhino.Geometry.Box to a Euclid box.
-        member b.BoxEuclid = Euclid.Box.createFromPlane(b.Plane.PPlane, b.X.Length, b.Y.Length, b.Z.Length)
+        member b.BoxEuclid = Euclid.Box.createFromPlane b.X.Length b.Y.Length b.Z.Length b.Plane.PPlane
 
         /// Convert a Rhino.Geometry.Box to a Euclid box.
-        static member toBoxEuclid(b:Geometry.Box) = Euclid.Box.createFromPlane(b.Plane.PPlane, b.X.Length, b.Y.Length, b.Z.Length)
+        static member toBoxEuclid(b:Geometry.Box) = Euclid.Box.createFromPlane b.X.Length b.Y.Length b.Z.Length b.Plane.PPlane
 
 
     type Geometry.Polyline with
@@ -713,8 +713,13 @@ module AutoOpenRhinoIntegration =
 
 
 
-    //do setupEuclidDebugFunctions () // this gets NOT called just by opening the module ! The 'do' part of a module only gets called when in a script
+    // this gets NOT called just by opening the module ! The 'do' part of a module only gets called when used in a script
+    // // https://github.com/dotnet/fsharp/issues/13905
+    //do setupEuclidDebugFunctions ()
 
     [<Obsolete("renamed to setupEuclidDebugFunctions")>]
-    let setupDebugFunctions () = setupEuclidDebugFunctions() // this gets called just by opening the module ! The 'do' part of a module only gets called when in a script
+    let setupDebugFunctions () =
+        // https://github.com/dotnet/fsharp/issues/13905
+        // this gets called just by opening the module ! The 'do' part of a module only gets called when  used in a script
+        setupEuclidDebugFunctions()
 

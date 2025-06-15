@@ -7,7 +7,7 @@
 [![Euclid.Rhino on nuget.org](https://img.shields.io/nuget/v/Euclid.Rhino)](https://www.nuget.org/packages/Euclid.Rhino/)
 [![Build Status](https://github.com/goswinr/Euclid.Rhino/actions/workflows/build.yml/badge.svg)](https://github.com/goswinr/Euclid.Rhino/actions/workflows/build.yml)
 [![Docs Build Status](https://github.com/goswinr/Euclid.Rhino/actions/workflows/docs.yml/badge.svg)](https://github.com/goswinr/Euclid.Rhino/actions/workflows/docs.yml)
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fgoswinr%2FEuclid&count_bg=%2379C83D&title_bg=%23555555&icon=github.svg&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+
 [![license](https://img.shields.io/github/license/goswinr/Euclid.Rhino)](LICENSE.md)
 ![code size](https://img.shields.io/github/languages/code-size/goswinr/Euclid.Rhino.svg)
 
@@ -21,12 +21,12 @@ The version number of `Euclid.Rhino` is aligned with the referenced version of `
 
 Just open the Euclid namespace.<br>
 `open Euclid`<br>
-This will auto-open the module  `AutoOpenRhinoIntegration`<br>
+This will auto-open the module `AutoOpenRhinoIntegration`<br>
 You will get access to all the extension methods for Rhino integration.
 
-Call `setupEuclidDebugFunctions()` once to replace the default debug drawing functions with Rhino specific ones.<br>
+Call `setupEuclidDebugFunctions()` once to replace the default debug drawing functions with Rhino-specific ones.<br>
 The library Euclid has no reference to Rhino.<br>
-However it has these mutable functions to display debug information in case of errors.<br>
+However, it has these mutable functions to display debug information in case of errors.<br>
 By default these functions do nothing.<br>
 After calling `setupEuclidDebugFunctions()` they get replaced with implementations that use Rhino for drawing.
 
