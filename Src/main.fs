@@ -1,6 +1,7 @@
 ﻿namespace Euclid
 
 open System
+open EuclidRhino
 open Rhino
 open Rhino.Geometry
 
@@ -717,9 +718,9 @@ module AutoOpenRhinoIntegration =
     // // https://github.com/dotnet/fsharp/issues/13905
     //do setupEuclidDebugFunctions ()
 
-    [<Obsolete("renamed to setupEuclidDebugFunctions")>]
-    let setupDebugFunctions () =
-        // https://github.com/dotnet/fsharp/issues/13905
-        // this gets called just by opening the module ! The 'do' part of a module only gets called when  used in a script
-        setupEuclidDebugFunctions()
+    // [<Obsolete("renamed to setupEuclidDebugFunctions")>]
+    // let setupDebugFunctions () =
+    //     // https://github.com/dotnet/fsharp/issues/13905
+    //     // this gets called just by opening the module ! The 'do' part of a module only gets called when  used in a script
+    //     setupEuclidDebugFunctions()
 

@@ -21,6 +21,7 @@ The version number of `Euclid.Rhino` is aligned with the referenced version of `
 
 Just open the Euclid namespace.<br>
 `open Euclid`<br>
+after referencing the package `Euclid.Rhino`.<br>
 This will auto-open the module `AutoOpenRhinoIntegration`<br>
 You will get access to all the extension methods for Rhino integration.
 

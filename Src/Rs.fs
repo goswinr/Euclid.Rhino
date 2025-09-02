@@ -1,4 +1,4 @@
-﻿namespace Euclid
+﻿namespace EuclidRhino
 
 // all modules copied over and adapted from from https://github.com/goswinr/Rhino.Scripting
 

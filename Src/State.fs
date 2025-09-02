@@ -1,4 +1,4 @@
-﻿namespace Euclid
+﻿namespace EuclidRhino
 
 // all modules copied over and adapted from from https://github.com/goswinr/Rhino.Scripting
 
@@ -24,7 +24,7 @@ type internal State private () =
 
 
     /// keep the reference to the active Document (3d file ) updated.
-    static let updateDoc (document:RhinoDoc) =    doc <- document //Rhino.RhinoDoc.ActiveDoc
+    static let updateDoc (document:RhinoDoc) = doc <- document //Rhino.RhinoDoc.ActiveDoc
 
 
     // -------Events: --------------------
@@ -45,7 +45,7 @@ type internal State private () =
         else
             //RhinoSync.Initialize()
             updateDoc(RhinoDoc.ActiveDoc)  // do first
-            setupEventsInSync()             // do after Doc is set up
+            setupEventsInSync()            // do after Doc is set up
 
 
     //----------------------------------------------------------------
@@ -57,3 +57,15 @@ type internal State private () =
         with get()=
             if isNull doc then initState()
             doc
+
+    static member DoSync (func:unit->'T) : 'T =
+        if RhinoApp.InvokeRequired then
+            if isNull Threading.SynchronizationContext.Current then
+                Eto.Forms.Application.Instance.Invoke func
+            else
+                async{
+                    do! Async.SwitchToContext Threading.SynchronizationContext.Current
+                    return func()
+                    } |> Async.RunSynchronously
+        else
+            func()

@@ -6,7 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-
+## [0.18.0] - 2025-09-02
+### Changed
+- fixDebug drawing to layer async
+- update to pull in Euclid 0.18.0
 
 ## [0.15.0] - 2025-06-15
 ### Changed
@@ -61,9 +64,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.0] - 2023-02-04
 ### Changed
 - align with Euclid 0.2.0
-
-
-[Unreleased]: https://github.com/goswinr/Euclid.Rhino/compare/v0.15.0...HEAD
+[Unreleased]: https://github.com/goswinr/Euclid.Rhino/compare/v0.18.0...HEAD
+[0.18.0]: https://github.com/goswinr/Euclid.Rhino/compare/v0.15.0...v0.18.0
 [0.15.0]: https://github.com/goswinr/Euclid.Rhino/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/goswinr/Euclid.Rhino/compare/v0.13.0...v0.14.0
 [0.13.0]: https://github.com/goswinr/Euclid.Rhino/compare/v0.10.0...v0.13.0
