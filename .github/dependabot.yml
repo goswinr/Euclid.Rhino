@@ -19,4 +19,6 @@ updates:
       - dependency-type: "all"
     ignore:
       - dependency-name: "FSharp.Core"
+      - dependency-name: "RhinoCommon"
+      - dependency-name: "Eto.Forms"
 

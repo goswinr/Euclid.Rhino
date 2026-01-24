@@ -20,7 +20,7 @@ module AutoOpenRhinoIntegration =
     type Point3d with
 
         /// Convert a Rhino.Geometry.Point3d to a Euclid 2D point, ignoring the Z component.
-        member inline v.Pt  = Pt(v.X, v.Y)
+        member inline v.Pt = Pt(v.X, v.Y)
 
         /// Convert a Rhino.Geometry.Point3d to a Euclid 3D point.
         member inline v.Pnt = Pnt(v.X, v.Y, v.Z)
@@ -35,7 +35,7 @@ module AutoOpenRhinoIntegration =
     type Point3f with
 
         /// Convert a Rhino.Geometry.Point3f to a Euclid 2D point, ignoring the Z component.
-        member inline v.Pt  = Pt(float v.X, float v.Y)
+        member inline v.Pt = Pt(float v.X, float v.Y)
 
         /// Convert a Rhino.Geometry.Point3f to a Euclid 3D point.
         member inline v.Pnt = Pnt(float v.X, float v.Y, float v.Z)
@@ -150,10 +150,10 @@ module AutoOpenRhinoIntegration =
     type Pt with
 
         /// Convert Euclid 2D point to Rhino Point3d with Z value 0.0.
-        member inline p.RhPt  = Point3d(p.X, p.Y, 0.0)
+        member inline p.RhPt = Point3d(p.X, p.Y, 0.0)
 
         /// Convert Euclid 2D point to Rhino Point3d with given Z value.
-        member inline p.RhPtZ(z)  = Point3d(p.X, p.Y, z)
+        member inline p.RhPtZ(z) = Point3d(p.X, p.Y, z)
 
         /// Convert Euclid 2D point to Rhino Point3d with Z value 0.0.
         static member inline toRhPt(p:Pt) = Point3d(p.X, p.Y, 0.0)
@@ -168,7 +168,7 @@ module AutoOpenRhinoIntegration =
         static member  draw (p:Pt) = Rs.AddPoint(p.X, p.Y, 0.0)
 
          /// Draw the Euclid 2D point as RhinoTextDot with given message.
-        static member  drawDot msg (p:Pt)  = Rs.AddTextDot(msg, p.X, p.Y, 0.0)
+        static member  drawDot msg (p:Pt) = Rs.AddTextDot(msg, p.X, p.Y, 0.0)
 
         /// Draw the Euclid 2D point in Rhino on current layer.
         member p.Draw() = Rs.AddPoint(p.X, p.Y, 0.0) |> ignore
@@ -191,7 +191,7 @@ module AutoOpenRhinoIntegration =
     type Pnt with
 
         /// Convert Euclid 3D point to Rhino Point3d.
-        member inline p.RhPt  = Point3d(p.X, p.Y, p.Z)
+        member inline p.RhPt = Point3d(p.X, p.Y, p.Z)
 
         /// Convert Euclid 3D point to Rhino Point3d.
         static member inline toRhPt(p:Pnt) = Point3d(p.X, p.Y, p.Z)
@@ -203,7 +203,7 @@ module AutoOpenRhinoIntegration =
         static member  draw (p:Pnt) = Rs.AddPoint(p.X, p.Y, p.Z)
 
          /// Draw the Euclid 3D point as RhinoTextDot with given message.
-        static member  drawDot msg (p:Pnt)  = Rs.AddTextDot(msg, p.X, p.Y, p.Z)
+        static member  drawDot msg (p:Pnt) = Rs.AddTextDot(msg, p.X, p.Y, p.Z)
 
         /// Draw the Euclid 3D point in Rhino on current layer.
         /// The Layer will be created if it does not exist.
@@ -364,7 +364,7 @@ module AutoOpenRhinoIntegration =
     type Euclid.Line3D with
 
         /// Convert Euclid 3D Line to Rhino Line.
-        member inline l.RhLine  = Geometry.Line(l.FromX,l.FromY,l.FromZ, l.ToX,l.ToY,l.ToZ)
+        member inline l.RhLine = Geometry.Line(l.FromX,l.FromY,l.FromZ, l.ToX,l.ToY,l.ToZ)
 
         /// Convert Euclid 3D Line to Rhino Line.
         static member inline toRhLine(l:Line3D) = Geometry.Line(l.FromX,l.FromY,l.FromZ, l.ToX,l.ToY,l.ToZ)
@@ -389,7 +389,7 @@ module AutoOpenRhinoIntegration =
     type Euclid.Line2D with
 
         /// Convert Euclid 2D Line to Rhino Line. Using 0.0 as Z value.
-        member inline l.RhLine  = Line(l.FromX,l.FromY,0,l.ToX,l.ToY,0)
+        member inline l.RhLine = Line(l.FromX,l.FromY,0,l.ToX,l.ToY,0)
 
         /// Convert Euclid 2D Line to Rhino Line. Using 0.0 as Z value.
         static member inline toRhLine(l:Line2D) = Line(l.FromX,l.FromY,0, l.ToX,l.ToY,0)
@@ -634,34 +634,71 @@ module AutoOpenRhinoIntegration =
             Geometry.NurbsSurface.CreateFromCorners(r.Pt0.RhPt, r.Pt1.RhPt, r.Pt2.RhPt, r.Pt3.RhPt)
 
 
-/// A module for drawing Euclid 2D geometry in Rhino
+/// A module for drawing Euclid 2D geometry in Rhino.
+/// All functions draw on Z=0 plane and use automatic layer naming.
 module Debug2D =
 
-    let drawDot        (msg:string, pt:Pt)  = Rs.AddTextDot(msg, pt.X, pt.Y, 0.0)                 |> Rs.setLayer "Euclid.Debug2D::drawDot"
-    let drawPt         (pt:Pt)              = Rs.AddPoint(pt.X, pt.Y, 0.0)                        |> Rs.setLayer "Euclid.Debug2D::drawPt"
-    let drawLine       (ln:Line2D)          = Rs.AddLine2D(ln.FromX, ln.FromY, ln.ToX, ln.ToY)    |> Rs.setLayer "Euclid.Debug2D::drawLine"
-    let drawLineFromTo (a:Pt, b:Pt)         = Rs.AddLine2D(a.X, a.Y, b.X, b.Y )                   |> Rs.setLayer "Euclid.Debug2D::drawLine"
-    let drawPolyLine   (ps:seq<Pt>)         = Rs.AddPolyline(ps |> Seq.map Pt.toRhPt)             |> Rs.setLayer "Euclid.Debug2D::drawPolyLine"
+    /// Draws a TextDot at a 2D point with the given message. Layer: "Euclid.Debug2D::drawDot".
+    let drawDot (msg:string, pt:Pt) = Rs.AddTextDot(msg, pt.X, pt.Y, 0.0) |> Rs.setLayer "Euclid.Debug2D::drawDot"
 
+    /// Draws a point at a 2D location. Layer: "Euclid.Debug2D::drawPt".
+    let drawPt (pt:Pt) = Rs.AddPoint(pt.X, pt.Y, 0.0) |> Rs.setLayer "Euclid.Debug2D::drawPt"
 
-    let drawDotLayer         (pt:Pt, msg:string, layer:string) = Rs.AddTextDot(msg, pt.X, pt.Y, 0.0)                |> Rs.setLayer layer
-    let drawPtLayer          (pt:Pt, layer:string)             = Rs.AddPoint(pt.X, pt.Y, 0.0)                       |> Rs.setLayer layer
-    let drawLineLayer        (ln:Line2D, layer:string)         = Rs.AddLine2D(ln.FromX, ln.FromY, ln.ToX, ln.ToY)   |> Rs.setLayer layer
-    let drawPolyLineLayer    (ps:seq<Pt>, layer:string)        = Rs.AddPolyline(ps |> Seq.map Pt.toRhPt )           |> Rs.setLayer layer
-    let drawLineFromToLayer  (a:Pt, b:Pt, layer:string)        = Rs.AddLine2D(a.X, a.Y, b.X, b.Y )                  |> Rs.setLayer layer
+    /// Draws a 2D line. Layer: "Euclid.Debug2D::drawLine".
+    let drawLine (ln:Line2D) = Rs.AddLine2D(ln.FromX, ln.FromY, ln.ToX, ln.ToY) |> Rs.setLayer "Euclid.Debug2D::drawLine"
 
-/// A module for drawing Euclid 3D geometry in Rhino
+    /// Draws a line between two 2D points. Layer: "Euclid.Debug2D::drawLine".
+    let drawLineFromTo (a:Pt, b:Pt) = Rs.AddLine2D(a.X, a.Y, b.X, b.Y) |> Rs.setLayer "Euclid.Debug2D::drawLine"
+
+    /// Draws a polyline through a sequence of 2D points. Layer: "Euclid.Debug2D::drawPolyLine".
+    let drawPolyLine (ps:seq<Pt>) = Rs.AddPolyline(ps |> Seq.map Pt.toRhPt) |> Rs.setLayer "Euclid.Debug2D::drawPolyLine"
+
+    /// Draws a TextDot at a 2D point with the given message on the specified layer. The layer will be created if it does not exist.
+    let drawDotLayer (pt:Pt, msg:string, layer:string) = Rs.AddTextDot(msg, pt.X, pt.Y, 0.0) |> Rs.setLayer layer
+
+    /// Draws a point at a 2D location on the specified layer. The layer will be created if it does not exist.
+    let drawPtLayer (pt:Pt, layer:string) = Rs.AddPoint(pt.X, pt.Y, 0.0) |> Rs.setLayer layer
+
+    /// Draws a 2D line on the specified layer. The layer will be created if it does not exist.
+    let drawLineLayer (ln:Line2D, layer:string) = Rs.AddLine2D(ln.FromX, ln.FromY, ln.ToX, ln.ToY) |> Rs.setLayer layer
+
+    /// Draws a polyline through a sequence of 2D points on the specified layer. The layer will be created if it does not exist.
+    let drawPolyLineLayer (ps:seq<Pt>, layer:string) = Rs.AddPolyline(ps |> Seq.map Pt.toRhPt) |> Rs.setLayer layer
+
+    /// Draws a line between two 2D points on the specified layer. The layer will be created if it does not exist.
+    let drawLineFromToLayer (a:Pt, b:Pt, layer:string) = Rs.AddLine2D(a.X, a.Y, b.X, b.Y) |> Rs.setLayer layer
+
+/// A module for drawing Euclid 3D geometry in Rhino.
+/// All functions use automatic layer naming.
 module Debug3D =
 
-    let drawDot          (msg:string, pt:Pnt) = Rs.AddTextDot(msg, pt.X, pt.Y, pt.Z)                               |> Rs.setLayer "Euclid.Debug3D::drawDot"
-    let drawPt           (pt:Pnt)             = Rs.AddPoint(pt.X, pt.Y, pt.Z)                                      |> Rs.setLayer "Euclid.Debug3D::drawPt"
-    let drawLine         (ln:Line3D)          = Rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ)   |> Rs.setLayer "Euclid.Debug3D::drawLine"
-    let drawLineFromTo   (a:Pnt, b:Pnt)       = Rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z )                          |> Rs.setLayer "Euclid.Debug3D::drawLine"
-    let drawPolyLine     (ps:seq<Pnt>)        = Rs.AddPolyline(ps |> Seq.map Pnt.toRhPt)                           |> Rs.setLayer "Euclid.Debug3D::drawPolyLine"
+    /// Draws a TextDot at a 3D point with the given message. Layer: "Euclid.Debug3D::drawDot".
+    let drawDot (msg:string, pt:Pnt) = Rs.AddTextDot(msg, pt.X, pt.Y, pt.Z) |> Rs.setLayer "Euclid.Debug3D::drawDot"
 
-    let drawDotLayer        (pt:Pnt, msg:string, layer:string)  = Rs.AddTextDot(msg, pt.X, pt.Y, pt.Z)                              |> Rs.setLayer layer
-    let drawPtLayer         (pt:Pnt, layer:string)              = Rs.AddPoint(pt.X, pt.Y, pt.Z)                                     |> Rs.setLayer layer
-    let drawLineLayer       (ln:Line3D, layer:string)           = Rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ)  |> Rs.setLayer layer
-    let drawLineFromToLayer (a:Pnt, b:Pnt, layer:string)        = Rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z )                         |> Rs.setLayer layer
-    let drawPolyLineLayer   (ps:seq<Pnt>, layer:string)         = Rs.AddPolyline(ps |> Seq.map Pnt.toRhPt)                          |> Rs.setLayer layer
+    /// Draws a point at a 3D location. Layer: "Euclid.Debug3D::drawPt".
+    let drawPt (pt:Pnt) = Rs.AddPoint(pt.X, pt.Y, pt.Z) |> Rs.setLayer "Euclid.Debug3D::drawPt"
+
+    /// Draws a 3D line. Layer: "Euclid.Debug3D::drawLine".
+    let drawLine (ln:Line3D) = Rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ) |> Rs.setLayer "Euclid.Debug3D::drawLine"
+
+    /// Draws a line between two 3D points. Layer: "Euclid.Debug3D::drawLine".
+    let drawLineFromTo (a:Pnt, b:Pnt) = Rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z) |> Rs.setLayer "Euclid.Debug3D::drawLine"
+
+    /// Draws a polyline through a sequence of 3D points. Layer: "Euclid.Debug3D::drawPolyLine".
+    let drawPolyLine (ps:seq<Pnt>) = Rs.AddPolyline(ps |> Seq.map Pnt.toRhPt) |> Rs.setLayer "Euclid.Debug3D::drawPolyLine"
+
+    /// Draws a TextDot at a 3D point with the given message on the specified layer. The layer will be created if it does not exist.
+    let drawDotLayer (pt:Pnt, msg:string, layer:string) = Rs.AddTextDot(msg, pt.X, pt.Y, pt.Z) |> Rs.setLayer layer
+
+    /// Draws a point at a 3D location on the specified layer. The layer will be created if it does not exist.
+    let drawPtLayer (pt:Pnt, layer:string) = Rs.AddPoint(pt.X, pt.Y, pt.Z) |> Rs.setLayer layer
+
+    /// Draws a 3D line on the specified layer. The layer will be created if it does not exist.
+    let drawLineLayer (ln:Line3D, layer:string) = Rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ) |> Rs.setLayer layer
+
+    /// Draws a line between two 3D points on the specified layer. The layer will be created if it does not exist.
+    let drawLineFromToLayer (a:Pnt, b:Pnt, layer:string) = Rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z) |> Rs.setLayer layer
+
+    /// Draws a polyline through a sequence of 3D points on the specified layer. The layer will be created if it does not exist.
+    let drawPolyLineLayer (ps:seq<Pnt>, layer:string) = Rs.AddPolyline(ps |> Seq.map Pnt.toRhPt) |> Rs.setLayer layer
 
