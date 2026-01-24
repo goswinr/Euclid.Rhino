@@ -634,93 +634,34 @@ module AutoOpenRhinoIntegration =
             Geometry.NurbsSurface.CreateFromCorners(r.Pt0.RhPt, r.Pt1.RhPt, r.Pt2.RhPt, r.Pt3.RhPt)
 
 
-    type Loop with
+/// A module for drawing Euclid 2D geometry in Rhino
+module Debug2D =
 
-        /// Convert Euclid 2D Loop to a Rhino Polyline in World XY Plane.
-        member lo.RhPolyline =
-            let pts = lo.Points |> Seq.map Pt.toRhPt
-            new Geometry.Polyline(pts)
-
-        /// Convert Euclid 2D Loop to a Rhino Polyline at Given Z level.
-        member lo.RhPolylineZ z =
-            let pts = lo.Points |> Seq.map (Pt.toRhPtZ z)
-            new Geometry.Polyline(pts)
-
-        /// Draw Euclid 2D Loop  in Rhino in World XY Plane.
-        static member draw (p:Loop) = Rs.AddPolyline p.RhPolyline
-
-        /// Draw Euclid 2D Loop  in Rhino at Given Z level.
-        static member drawZ  z (p:Loop) = Rs.AddPolyline (p.RhPolylineZ z)
-
-        /// Try to create a Euclid Loop with minimum segment length and snapping tolerance from a Guid of a Rhino PolylineCurve.
-        static member createOfRhGuid minSegLen snapTol (guid:System.Guid) : Loop =
-            let obj = State.Doc.Objects.FindId(guid)
-            if isNull obj then failwithf "Euclid.Rhino.Rs.Loop.createOfRhGuid: %O not found"  guid
-            match obj.Geometry with
-            | :? Curve as curve ->
-                if not curve.IsClosed then failwithf "Euclid.Rhino.Rs.Loop.createOfRhGuid: Curve not closed %A " guid
-                let rc, polyline = curve.TryGetPolyline()
-                if rc then
-                    polyline
-                    |> Seq.map (fun p -> Pt(p.X, p.Y))
-                    |> Array.ofSeq
-                    |> Loop.create minSegLen snapTol
-                else
-                    failwithf "Euclid.Rhino.Rs.Loop.createOfRhGuid: guid does not reference a polyline. guid:'%A' " guid
-
-            | _ -> failwithf "Euclid.Rhino.Rs.Loop.createOfRhGuid: failed on: %O " guid
+    let drawDot        (msg:string, pt:Pt)  = Rs.AddTextDot(msg, pt.X, pt.Y, 0.0)                 |> Rs.setLayer "Euclid.Debug2D::drawDot"
+    let drawPt         (pt:Pt)              = Rs.AddPoint(pt.X, pt.Y, 0.0)                        |> Rs.setLayer "Euclid.Debug2D::drawPt"
+    let drawLine       (ln:Line2D)          = Rs.AddLine2D(ln.FromX, ln.FromY, ln.ToX, ln.ToY)    |> Rs.setLayer "Euclid.Debug2D::drawLine"
+    let drawLineFromTo (a:Pt, b:Pt)         = Rs.AddLine2D(a.X, a.Y, b.X, b.Y )                   |> Rs.setLayer "Euclid.Debug2D::drawLine"
+    let drawPolyLine   (ps:seq<Pt>)         = Rs.AddPolyline(ps |> Seq.map Pt.toRhPt)             |> Rs.setLayer "Euclid.Debug2D::drawPolyLine"
 
 
-        /// Try to create a Euclid Loop with minimum segment length and snapping tolerance from a Rhino PolylineCurve Geometry.
-        static member createOfRhPoly minSegLen snapTol (poly:PolylineCurve) : Loop =
-            if not poly.IsClosed then failwithf "Euclid.Rhino.Rs.Loop.createOfRhPoly: PolylineCurve is not closed "
-            [| for i = 0 to poly.PointCount - 1 do
-                let p = poly.Point(i)
-                Pt(p.X, p.Y) |]
-            |> Loop.create minSegLen snapTol
+    let drawDotLayer         (pt:Pt, msg:string, layer:string) = Rs.AddTextDot(msg, pt.X, pt.Y, 0.0)                |> Rs.setLayer layer
+    let drawPtLayer          (pt:Pt, layer:string)             = Rs.AddPoint(pt.X, pt.Y, 0.0)                       |> Rs.setLayer layer
+    let drawLineLayer        (ln:Line2D, layer:string)         = Rs.AddLine2D(ln.FromX, ln.FromY, ln.ToX, ln.ToY)   |> Rs.setLayer layer
+    let drawPolyLineLayer    (ps:seq<Pt>, layer:string)        = Rs.AddPolyline(ps |> Seq.map Pt.toRhPt )           |> Rs.setLayer layer
+    let drawLineFromToLayer  (a:Pt, b:Pt, layer:string)        = Rs.AddLine2D(a.X, a.Y, b.X, b.Y )                  |> Rs.setLayer layer
 
+/// A module for drawing Euclid 3D geometry in Rhino
+module Debug3D =
 
-    /// Dependency injection for debugging in Rhino:
-    /// The library Euclid has no reference to Rhino.
-    /// However it has these mutable functions to display debug information in case of errors.
-    /// By default these functions do nothing.
-    /// Here, after calling setupEuclidDebugFunctions() in the Euclid.Rhino.dll they get replaced with implementations that use Rhino for drawing:
-    let setupEuclidDebugFunctions () =
-        Debug2D.drawDot         <- fun (msg, pt)     -> Rs.AddTextDot(msg, pt.X, pt.Y, 0.0)                 |> Rs.setLayer "Euclid.Debug2D::drawDot"
-        Debug2D.drawPt          <- fun pt            -> Rs.AddPoint(pt.X, pt.Y, 0.0)                        |> Rs.setLayer "Euclid.Debug2D::drawPt"
-        Debug2D.drawLine        <- fun (ln)          -> Rs.AddLine2D(ln.FromX, ln.FromY, ln.ToX, ln.ToY)    |> Rs.setLayer "Euclid.Debug2D::drawLine"
-        Debug2D.drawLineFromTo  <- fun (a:Pt, b:Pt)  -> Rs.AddLine2D(a.X, a.Y, b.X, b.Y )                   |> Rs.setLayer "Euclid.Debug2D::drawLine"
-        Debug2D.drawPolyLine    <- fun (ps:seq<Pt>)  -> Rs.AddPolyline(ps |> Seq.map Pt.toRhPt)             |> Rs.setLayer "Euclid.Debug2D::drawPolyLine"
+    let drawDot          (msg:string, pt:Pnt) = Rs.AddTextDot(msg, pt.X, pt.Y, pt.Z)                               |> Rs.setLayer "Euclid.Debug3D::drawDot"
+    let drawPt           (pt:Pnt)             = Rs.AddPoint(pt.X, pt.Y, pt.Z)                                      |> Rs.setLayer "Euclid.Debug3D::drawPt"
+    let drawLine         (ln:Line3D)          = Rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ)   |> Rs.setLayer "Euclid.Debug3D::drawLine"
+    let drawLineFromTo   (a:Pnt, b:Pnt)       = Rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z )                          |> Rs.setLayer "Euclid.Debug3D::drawLine"
+    let drawPolyLine     (ps:seq<Pnt>)        = Rs.AddPolyline(ps |> Seq.map Pnt.toRhPt)                           |> Rs.setLayer "Euclid.Debug3D::drawPolyLine"
 
-        // pt:Pt -> msg:string -> layer:string
-        Debug2D.drawDotLayer         <- fun (pt:Pt, msg:string, layer:string) -> Rs.AddTextDot(msg, pt.X, pt.Y, 0.0)                |> Rs.setLayer layer
-        Debug2D.drawPtLayer          <- fun (pt:Pt, layer:string)             -> Rs.AddPoint(pt.X, pt.Y, 0.0)                       |> Rs.setLayer layer
-        Debug2D.drawLineLayer        <- fun (ln:Line2D, layer:string)         -> Rs.AddLine2D(ln.FromX, ln.FromY, ln.ToX, ln.ToY)   |> Rs.setLayer layer
-        Debug2D.drawPolyLineLayer    <- fun (ps:seq<Pt>, layer:string)        -> Rs.AddPolyline(ps |> Seq.map Pt.toRhPt )           |> Rs.setLayer layer
-        Debug2D.drawLineFromToLayer  <- fun (a:Pt, b:Pt, layer:string)        -> Rs.AddLine2D(a.X, a.Y, b.X, b.Y )                  |> Rs.setLayer layer
-
-        Debug3D.drawDot          <- fun (msg, pt)       -> Rs.AddTextDot(msg, pt.X, pt.Y, pt.Z)                               |> Rs.setLayer "Euclid.Debug2D::drawDot"
-        Debug3D.drawPt           <- fun pt              -> Rs.AddPoint(pt.X, pt.Y, pt.Z)                                      |> Rs.setLayer "Euclid.Debug2D::drawPt"
-        Debug3D.drawLine         <- fun (ln:Line3D)     -> Rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ)   |> Rs.setLayer "Euclid.Debug2D::drawLine"
-        Debug3D.drawLineFromTo   <- fun (a:Pnt, b:Pnt)  -> Rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z )                          |> Rs.setLayer "Euclid.Debug2D::drawLine"
-        Debug3D.drawPolyLine     <- fun (ps:seq<Pnt>)   -> Rs.AddPolyline(ps |> Seq.map Pnt.toRhPt)                           |> Rs.setLayer "Euclid.Debug2D::drawPolyLine"
-
-        // pt:Pnt -> msg:string -> layer:string
-        Debug3D.drawDotLayer        <- fun (pt:Pnt, msg:string, layer:string)  -> Rs.AddTextDot(msg, pt.X, pt.Y, pt.Z)                              |> Rs.setLayer layer
-        Debug3D.drawPtLayer         <- fun (pt:Pnt, layer:string)              -> Rs.AddPoint(pt.X, pt.Y, pt.Z)                                     |> Rs.setLayer layer
-        Debug3D.drawLineLayer       <- fun (ln:Line3D, layer:string)           -> Rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ)  |> Rs.setLayer layer
-        Debug3D.drawLineFromToLayer <- fun (a:Pnt, b:Pnt, layer:string)        -> Rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z )                         |> Rs.setLayer layer
-        Debug3D.drawPolyLineLayer   <- fun (ps:seq<Pnt>, layer:string)         -> Rs.AddPolyline(ps |> Seq.map Pnt.toRhPt)                          |> Rs.setLayer layer
-
-
-
-    // this gets NOT called just by opening the module ! The 'do' part of a module only gets called when used in a script
-    // // https://github.com/dotnet/fsharp/issues/13905
-    //do setupEuclidDebugFunctions ()
-
-    // [<Obsolete("renamed to setupEuclidDebugFunctions")>]
-    // let setupDebugFunctions () =
-    //     // https://github.com/dotnet/fsharp/issues/13905
-    //     // this gets called just by opening the module ! The 'do' part of a module only gets called when  used in a script
-    //     setupEuclidDebugFunctions()
+    let drawDotLayer        (pt:Pnt, msg:string, layer:string)  = Rs.AddTextDot(msg, pt.X, pt.Y, pt.Z)                              |> Rs.setLayer layer
+    let drawPtLayer         (pt:Pnt, layer:string)              = Rs.AddPoint(pt.X, pt.Y, pt.Z)                                     |> Rs.setLayer layer
+    let drawLineLayer       (ln:Line3D, layer:string)           = Rs.AddLine(ln.FromX, ln.FromY, ln.FromZ, ln.ToX, ln.ToY, ln.ToZ)  |> Rs.setLayer layer
+    let drawLineFromToLayer (a:Pnt, b:Pnt, layer:string)        = Rs.AddLine(a.X, a.Y, a.Z, b.X, b.Y, b.Z )                         |> Rs.setLayer layer
+    let drawPolyLineLayer   (ps:seq<Pnt>, layer:string)         = Rs.AddPolyline(ps |> Seq.map Pnt.toRhPt)                          |> Rs.setLayer layer
 

@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">	<!-- for UseWindowsForms-->
   <PropertyGroup>
 	<OutputType>Library</OutputType>
-  <TargetFrameworks>net48;net7.0</TargetFrameworks>
+  <TargetFrameworks>net48;net8.0</TargetFrameworks>
 
 	<LangVersion>preview</LangVersion>
 	<SatelliteResourceLanguages>en</SatelliteResourceLanguages> <!--to only have the English resources of Fsharp.Core-->
@@ -12,27 +12,27 @@
 	<AssemblyName>Euclid.Rhino</AssemblyName>
 	<AssemblyTitle>Euclid.Rhino</AssemblyTitle>
 	<PackageId>Euclid.Rhino</PackageId>
-    <Title>Euclid.Rhino</Title>
-    <PackageId>Euclid.Rhino</PackageId>
+  <Title>Euclid.Rhino</Title>
+  <PackageId>Euclid.Rhino</PackageId>
 
-    <!-- <Version>0.0.0</Version>  done by Ionide.KeepAChangelog.Tasks-->
+  <!-- <Version>0.0.0</Version>  done by Ionide.KeepAChangelog.Tasks-->
 
-    <Authors>GoswinR</Authors>
-    <Copyright>Goswin Rothenthal 2019</Copyright>
-    <Description>Utilities to use types from Euclid in Rhino3d</Description>
-    <PackageDescription>Utilities to use types from Euclid in Rhino3d</PackageDescription>
+  <Authors>GoswinR</Authors>
+  <Copyright>Goswin Rothenthal 2019-2026</Copyright>
+  <Description>Utilities to use types from Euclid in Rhino3d</Description>
+  <PackageDescription>Utilities to use types from Euclid in Rhino3d</PackageDescription>
 
-	<Product>Rhino Interop for Euclid</Product> <!--visible in explorer-->
+	<Product>Rhino integration for the Euclid geometry Library</Product> <!--visible in explorer-->
 
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<NeutralLanguage>en</NeutralLanguage>
-	<Configuration>Release</Configuration>
 
-	<PlatformTarget>x64</PlatformTarget> <!-- x64 is required e.g by Rhino, dont us just 'Platform' tag-->
-  </PropertyGroup>
+	<!-- <PlatformTarget>x64</PlatformTarget>  -->
+  <!-- x64 is required e.g by Rhino, dont us just 'Platform' tag-->
+</PropertyGroup>
 
-  <PropertyGroup>
-	<PackageTags>fsharp;geometry;Rhino3d;RhinoCommon</PackageTags>
+<PropertyGroup>
+	  <PackageTags>fsharp;geometry;Rhino3d;RhinoCommon</PackageTags>
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
@@ -50,7 +50,7 @@
     <FsDocsReleaseNotesLink>https://github.com/goswinr/Euclid.Rhino/blob/main/CHANGELOG.md</FsDocsReleaseNotesLink>
     <PackageProjectUrl>https://goswinr.github.io/Euclid.Rhino</PackageProjectUrl>
 
-	<FsDocsFaviconSource>img/favicon.ico</FsDocsFaviconSource>
+	  <FsDocsFaviconSource>img/favicon.ico</FsDocsFaviconSource>
     <FsDocsWarnOnMissingDocs>true</FsDocsWarnOnMissingDocs>
 
     <ChangelogFile>./CHANGELOG.md</ChangelogFile>
@@ -59,20 +59,19 @@
 
   <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="6.0.7" />  <!-- so that dependabot does not fail, even though it is set to be excluded -->
-	  <PackageReference Include="Euclid" Version="0.16.0" />
+	  <PackageReference Include="Euclid" Version="0.20.0-beta2" />
     <!-- <ProjectReference Include="D:\Git\_Euclid_\Euclid\Euclid.fsproj" /> -->
-    <PackageReference Include="RhinoCommon" Version="7.0.20314.3001"  Condition="'$(TargetFramework)' == 'net48'"  PrivateAssets="all" ExcludeAssets="runtime" /> <!--should be the same version as Rhino.Scripting and Rhino.Scripting.Extension -->
-    <PackageReference Include="RhinoCommon" Version="8.19.25132.1001" Condition="'$(TargetFramework)' == 'net7.0'" PrivateAssets="all" ExcludeAssets="runtime" /><!--should be the same version as Rhino.Scripting and Rhino.Scripting.Extension -->
+    <PackageReference Include="RhinoCommon" Version="7.0.20314.3001"  Condition="'$(TargetFramework)' == 'net48'" PrivateAssets="all" ExcludeAssets="runtime" /> <!--should be the same version as Rhino.Scripting and Rhino.Scripting.Extension -->
+    <PackageReference Include="RhinoCommon" Version="8.19.25132.1001" Condition="'$(TargetFramework)' != 'net48'" PrivateAssets="all" ExcludeAssets="runtime" /><!--should be the same version as Rhino.Scripting and Rhino.Scripting.Extension -->
     <PackageReference Include="Eto.Forms" Version="2.9.0" PrivateAssets="All" /> <!-- so it works on Mac too and doesn't need Mac.Mono https://discourse.mcneel.com/t/rhino-for-mac-wip-goodbye-mono-hello-net-6/131925 -->
-    <PackageReference Include="Ionide.KeepAChangelog.Tasks" Version="0.1.8" PrivateAssets="all"  />
+    <PackageReference Include="Ionide.KeepAChangelog.Tasks" Version="0.3.1" PrivateAssets="all"  />
   </ItemGroup>
 
   <ItemGroup>
 	<None Include="./README.md" Pack="true" PackagePath="" />
     <None Include="./Docs/img/logo128.png" Pack="true" PackagePath="" />   <!--PackagePath = "" makes the file available to nuget pack tool-->
 
-
-	<Compile Include="Src/State.fs" />
+	  <Compile Include="Src/State.fs" />
     <Compile Include="Src/Util.fs" />
     <Compile Include="Src/Rs.fs" />
     <Compile Include="Src/main.fs" />
