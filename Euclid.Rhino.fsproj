@@ -63,7 +63,7 @@
     <!-- <ProjectReference Include="D:\Git\_Euclid_\Euclid\Euclid.fsproj" /> -->
     <PackageReference Include="RhinoCommon" Version="7.0.20314.3001"  Condition="'$(TargetFramework)' == 'net48'" PrivateAssets="all" ExcludeAssets="runtime" /> <!--should be the same version as Rhino.Scripting and Rhino.Scripting.Extension -->
     <PackageReference Include="RhinoCommon" Version="8.19.25132.1001" Condition="'$(TargetFramework)' != 'net48'" PrivateAssets="all" ExcludeAssets="runtime" /><!--should be the same version as Rhino.Scripting and Rhino.Scripting.Extension -->
-    <PackageReference Include="Eto.Forms" Version="2.9.0" PrivateAssets="All" /> <!-- so it works on Mac too and doesn't need Mac.Mono https://discourse.mcneel.com/t/rhino-for-mac-wip-goodbye-mono-hello-net-6/131925 -->
+    <PackageReference Include="Eto.Forms" Version="2.10.2" PrivateAssets="All" /> <!-- so it works on Mac too and doesn't need Mac.Mono https://discourse.mcneel.com/t/rhino-for-mac-wip-goodbye-mono-hello-net-6/131925 -->
     <PackageReference Include="Ionide.KeepAChangelog.Tasks" Version="0.3.1" PrivateAssets="all"  />
   </ItemGroup>
 
