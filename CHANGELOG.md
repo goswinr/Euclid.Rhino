@@ -7,10 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.20.0-beta2] - 2026-01-24
+## [0.20.0-beta3] - 2026-01-24
 ### Changed
 - fixDebug drawing to layer async
-- update to pull in Euclid 0.20.0-beta2 (BREAKING changes)
+- update to pull in Euclid 0.20.0-beta3 (BREAKING changes)
 - target net8.0
 
 ## [0.15.0] - 2025-06-15
