@@ -17,16 +17,20 @@ It provides extension members for drawing Euclid geometry in Rhino.<br>
 And for converting Rhino geometry to Euclid geometry. And vice versa.<br>
 The version number of `Euclid.Rhino` is aligned with the referenced version of `Euclid`.
 
-## Documentation
+## How to use
 
-Just open the Euclid namespace.<br>
-`open Euclid`<br>
-after referencing the package `Euclid.Rhino`.<br>
+After referencing the package [Euclid.Rhino](https://www.nuget.org/packages/Euclid.Rhino/) in your project or F# script<br>
+just open the Euclid namespace:
+
+```fsharp
+open Euclid
+```
+
 This will auto-open the module `AutoOpenRhinoIntegration`<br>
 You will get access to all the extension methods for Rhino integration.
 
-For the main functions look at [main.fs](https://github.com/goswinr/Euclid.Rhino/blob/main/main.fs) .<br>
-Or go to [goswinr.github.io/Euclid.Rhino](https://goswinr.github.io/Euclid.Rhino/reference/euclid-autoopenrhinointegration.html) for the full documentation.
+See [goswinr.github.io/Euclid.Rhino](https://goswinr.github.io/Euclid.Rhino/reference/euclid-autoopenrhinointegration.html) for the full documentation.<br>
+For the main functions you can also look at [main.fs](https://github.com/goswinr/Euclid.Rhino/blob/main/main.fs) .<br>
 
 ## Sample Code
 
