@@ -3,7 +3,7 @@
 open System
 open EuclidRhino
 open Rhino
-open Rhino.Geometry
+// open Rhino.Geometry
 
 /// If this module is opened then you can
 /// convert Rhino points and vectors and Euclid points and vectors to each other
@@ -17,7 +17,7 @@ module AutoOpenRhinoIntegration =
     // --------------------Extensions on Rhino types- ------------------------
     // -----------------------------------------------------------------------
 
-    type Point3d with
+    type Geometry.Point3d with
 
         /// Convert a Rhino.Geometry.Point3d to a Euclid 2D point, ignoring the Z component.
         member inline v.Pt = Pt(v.X, v.Y)
@@ -26,13 +26,13 @@ module AutoOpenRhinoIntegration =
         member inline v.Pnt = Pnt(v.X, v.Y, v.Z)
 
         /// Convert a Rhino.Geometry.Point3d to a Euclid 2D point, ignoring the Z component.
-        static member inline toPt(p:Point3d) = Pt(p.X, p.Y)
+        static member inline toPt(p:Geometry.Point3d) = Pt(p.X, p.Y)
 
         /// Convert a Rhino.Geometry.Point3d to a Euclid 3D point.
-        static member inline toPnt(p:Point3d) = Pnt(p.X, p.Y, p.Z)
+        static member inline toPnt(p:Geometry.Point3d) = Pnt(p.X, p.Y, p.Z)
 
 
-    type Point3f with
+    type Geometry.Point3f with
 
         /// Convert a Rhino.Geometry.Point3f to a Euclid 2D point, ignoring the Z component.
         member inline v.Pt = Pt(float v.X, float v.Y)
@@ -41,12 +41,12 @@ module AutoOpenRhinoIntegration =
         member inline v.Pnt = Pnt(float v.X, float v.Y, float v.Z)
 
         /// Convert a Rhino.Geometry.Point3f to a Euclid 2D point, ignoring the Z component.
-        static member inline toPt(p:Point3f) = Pt(float p.X, float p.Y)
+        static member inline toPt(p:Geometry.Point3f) = Pt(float p.X, float p.Y)
 
         /// Convert a Rhino.Geometry.Point3f to a Euclid 3D point.
-        static member inline toPnt(p:Point3f) = Pnt(float p.X, float p.Y, float p.Z)
+        static member inline toPnt(p:Geometry.Point3f) = Pnt(float p.X, float p.Y, float p.Z)
 
-    type Vector3d with
+    type Geometry.Vector3d with
 
         /// Convert a Rhino.Geometry.Vector3d to a Euclid 2D vector, ignoring the Z component.
         member inline v.Vc = Vc( v.X,  v.Y)
@@ -61,12 +61,12 @@ module AutoOpenRhinoIntegration =
         member inline v.UnitVec = UnitVec.create( v.X,  v.Y, v.Z)
 
         /// Convert a Rhino.Geometry.Vector3d to a Euclid 2D vector, ignoring the Z component.
-        static member inline toVc (v:Vector3d) = Vc( v.X,  v.Y)
+        static member inline toVc (v:Geometry.Vector3d) = Vc( v.X,  v.Y)
 
         /// Convert a Rhino.Geometry.Vector3d to a Euclid 3D vector.
-        static member inline toVec (v:Vector3d) = Vec( v.X,  v.Y,  v.Z)
+        static member inline toVec (v:Geometry.Vector3d) = Vec( v.X,  v.Y,  v.Z)
 
-    type Vector3f with
+    type Geometry.Vector3f with
         /// Convert a Rhino.Geometry.Vector3f to a Euclid 2D vector, ignoring the Z component.
         member inline v.Vc = Vc(float v.X, float v.Y)
 
@@ -80,10 +80,10 @@ module AutoOpenRhinoIntegration =
         member inline v.UnitVec = UnitVec.create(float v.X, float v.Y, float v.Z)
 
         /// Convert a Rhino.Geometry.Vector3f to a Euclid 2D vector, ignoring the Z component.
-        static member inline toVc (v:Vector3f) = Vc(float v.X, float v.Y)
+        static member inline toVc (v:Geometry.Vector3f) = Vc(float v.X, float v.Y)
 
         /// Convert a Rhino.Geometry.Vector3f to a Euclid 3D vector.
-        static member inline toVec (v:Vector3f) = Vec(float v.X, float v.Y, float v.Z)
+        static member inline toVec (v:Geometry.Vector3f) = Vec(float v.X, float v.Y, float v.Z)
 
     type Geometry.Line with
 
@@ -130,16 +130,16 @@ module AutoOpenRhinoIntegration =
     type Geometry.Polyline with
 
         /// Convert a Rhino.Geometry.Polyline to a Euclid 3D polyline.
-        member p.Polyline3D = Polyline3D.create(Seq.map Point3d.toPnt p)
+        member p.Polyline3D = Polyline3D.create(Seq.map Geometry.Point3d.toPnt p)
 
         /// Convert a Rhino.Geometry.Polyline to a Euclid 3D polyline.
-        static member toPolyline3D(p:Geometry.Polyline) = Polyline3D.create(Seq.map Point3d.toPnt p)
+        static member toPolyline3D(p:Geometry.Polyline) = Polyline3D.create(Seq.map Geometry.Point3d.toPnt p)
 
         /// Convert a Rhino.Geometry.Polyline to a Euclid 2D polyline. Ignoring the Z component.
-        member p.Polyline2D = Polyline2D.create(Seq.map Point3d.toPt p)
+        member p.Polyline2D = Polyline2D.create(Seq.map Geometry.Point3d.toPt p)
 
         /// Convert a Rhino.Geometry.Polyline to a Euclid 2D polyline. Ignoring the Z component.
-        static member toPolyline2D(p:Geometry.Polyline) = Polyline2D.create(Seq.map Point3d.toPt p)
+        static member toPolyline2D(p:Geometry.Polyline) = Polyline2D.create(Seq.map Geometry.Point3d.toPt p)
 
 
     // -----------------------------------------------------------------------
@@ -149,20 +149,20 @@ module AutoOpenRhinoIntegration =
 
     type Pt with
 
-        /// Convert Euclid 2D point to Rhino Point3d with Z value 0.0.
-        member inline p.RhPt = Point3d(p.X, p.Y, 0.0)
+        /// Convert Euclid 2D point to Rhino Geometry.Point3d with Z value 0.0.
+        member inline p.RhPt = Geometry.Point3d(p.X, p.Y, 0.0)
 
-        /// Convert Euclid 2D point to Rhino Point3d with given Z value.
-        member inline p.RhPtZ(z) = Point3d(p.X, p.Y, z)
+        /// Convert Euclid 2D point to Rhino Geometry.Point3d with given Z value.
+        member inline p.RhPtZ(z) = Geometry.Point3d(p.X, p.Y, z)
 
-        /// Convert Euclid 2D point to Rhino Point3d with Z value 0.0.
-        static member inline toRhPt(p:Pt) = Point3d(p.X, p.Y, 0.0)
+        /// Convert Euclid 2D point to Rhino Geometry.Point3d with Z value 0.0.
+        static member inline toRhPt(p:Pt) = Geometry.Point3d(p.X, p.Y, 0.0)
 
-        /// Convert Euclid 2D point to Rhino Point3d with given Z value.
-        static member inline toRhPtZ z (p:Pt) = Point3d(p.X, p.Y, z)
+        /// Convert Euclid 2D point to Rhino Geometry.Point3d with given Z value.
+        static member inline toRhPtZ z (p:Pt) = Geometry.Point3d(p.X, p.Y, z)
 
-        /// Convert Rhino Point3d to Euclid 2D point, ignoring Z value.
-        static member inline ofRhPt(p:Point3d) = Pt(p.X, p.Y)
+        /// Convert Rhino Geometry.Point3d to Euclid 2D point, ignoring Z value.
+        static member inline ofRhPt(p: Geometry.Point3d) = Pt(p.X, p.Y)
 
         /// Draw the Euclid 2D point in Rhino on current layer.
         static member  draw (p:Pt) = Rs.AddPoint(p.X, p.Y, 0.0)
@@ -190,14 +190,14 @@ module AutoOpenRhinoIntegration =
 
     type Pnt with
 
-        /// Convert Euclid 3D point to Rhino Point3d.
-        member inline p.RhPt = Point3d(p.X, p.Y, p.Z)
+        /// Convert Euclid 3D point to Rhino Geometry.Point3d.
+        member inline p.RhPt = Geometry.Point3d(p.X, p.Y, p.Z)
 
-        /// Convert Euclid 3D point to Rhino Point3d.
-        static member inline toRhPt(p:Pnt) = Point3d(p.X, p.Y, p.Z)
+        /// Convert Euclid 3D point to Rhino Geometry.Point3d.
+        static member inline toRhPt(p:Pnt) = Geometry.Point3d(p.X, p.Y, p.Z)
 
-        /// Convert Rhino Point3d to Euclid 3D point.
-        static member inline ofRhPt(p:Point3d) = Pnt(p.X, p.Y, p.Z)
+        /// Convert Rhino Geometry.Point3d to Euclid 3D point.
+        static member inline ofRhPt(p: Geometry.Point3d) = Pnt(p.X, p.Y, p.Z)
 
         /// Draw the Euclid 3D point in Rhino on current layer.
         static member  draw (p:Pnt) = Rs.AddPoint(p.X, p.Y, p.Z)
@@ -227,14 +227,14 @@ module AutoOpenRhinoIntegration =
 
     type Vc with
 
-        /// Convert Euclid 2D vector to Rhino Vector3d with Z value 0.0.
-        member inline v.RhVec = Vector3d(v.X, v.Y, 0.0)
+        /// Convert Euclid 2D vector to Rhino Geometry.Vector3d with Z value 0.0.
+        member inline v.RhVec = Geometry.Vector3d(v.X, v.Y, 0.0)
 
-        /// Convert Euclid 2D vector to Rhino Vector3d with Z value 0.0.
-        static member inline toRhVec(v:Vc) = Vector3d(v.X, v.Y, 0.0)
+        /// Convert Euclid 2D vector to Rhino Geometry.Vector3d with Z value 0.0.
+        static member inline toRhVec(v:Vc) = Geometry.Vector3d(v.X, v.Y, 0.0)
 
-        /// Convert Rhino Vector3d to Euclid 2D vector, ignoring Z value.
-        static member inline ofRhVec(v:Vector3d) = Vc(v.X, v.Y)
+        /// Convert Rhino Geometry.Vector3d to Euclid 2D vector, ignoring Z value.
+        static member inline ofRhVec(v:Geometry.Vector3d) = Vc(v.X, v.Y)
 
         /// Draw the Euclid 2D vector in Rhino as line with Curve Arrow.
         /// Using given start point and scale.
@@ -261,14 +261,14 @@ module AutoOpenRhinoIntegration =
 
     type UnitVc with
 
-        /// Convert Euclid 2D unit vector to Rhino Vector3d with Z value 0.0.
-        member inline v.RhVec = Vector3d(v.X, v.Y, 0.0)
+        /// Convert Euclid 2D unit vector to Rhino Geometry.Vector3d with Z value 0.0.
+        member inline v.RhVec = Geometry.Vector3d(v.X, v.Y, 0.0)
 
-        /// Convert Euclid 2D unit vector to Rhino Vector3d with Z value 0.0.
-        static member inline toRhVec(v:UnitVc) = Vector3d(v.X, v.Y, 0.0)
+        /// Convert Euclid 2D unit vector to Rhino Geometry.Vector3d with Z value 0.0.
+        static member inline toRhVec(v:UnitVc) = Geometry.Vector3d(v.X, v.Y, 0.0)
 
-        /// Unitize a Rhino Vector3d to Euclid 2D unit vector, ignoring Z value.
-        static member inline ofRhVec(v:Vector3d) = UnitVc.create(v.X, v.Y)
+        /// Unitize a Rhino Geometry.Vector3d to Euclid 2D unit vector, ignoring Z value.
+        static member inline ofRhVec(v:Geometry.Vector3d) = UnitVc.create(v.X, v.Y)
 
         /// Draw the Euclid 2D unit vector in Rhino as line with Curve Arrow.
         /// Using given start point and scale.
@@ -296,14 +296,14 @@ module AutoOpenRhinoIntegration =
 
     type Vec with
 
-        /// Convert Euclid 3D vector to Rhino Vector3d.
-        member inline v.RhVec = Vector3d(v.X, v.Y, v.Z)
+        /// Convert Euclid 3D vector to Rhino Geometry.Vector3d.
+        member inline v.RhVec = Geometry.Vector3d(v.X, v.Y, v.Z)
 
-        /// Convert Euclid 3D vector to Rhino Vector3d.
-        static member inline toRhVec(v:Vec) = Vector3d(v.X, v.Y, v.Z)
+        /// Convert Euclid 3D vector to Rhino Geometry.Vector3d.
+        static member inline toRhVec(v:Vec) = Geometry.Vector3d(v.X, v.Y, v.Z)
 
-        /// Convert Rhino Vector3d to Euclid 3D vector.
-        static member inline ofRhVec(v:Vector3d) = Vec(v.X, v.Y, v.Z)
+        /// Convert Rhino Geometry.Vector3d to Euclid 3D vector.
+        static member inline ofRhVec(v:Geometry.Vector3d) = Vec(v.X, v.Y, v.Z)
 
         /// Draw the Euclid 3D vector in Rhino as line with Curve Arrow.
         /// Using given start point and scale.
@@ -329,14 +329,14 @@ module AutoOpenRhinoIntegration =
 
     type UnitVec with
 
-        /// Convert Euclid 3D unit vector to Rhino Vector3d.
-        member inline v.RhVec = Vector3d(v.X, v.Y, v.Z)
+        /// Convert Euclid 3D unit vector to Rhino Geometry.Vector3d.
+        member inline v.RhVec = Geometry.Vector3d(v.X, v.Y, v.Z)
 
-        /// Convert Euclid 3D unit vector to Rhino Vector3d.
-        static member inline toRhVec(v:UnitVec) = Vector3d(v.X, v.Y, v.Z)
+        /// Convert Euclid 3D unit vector to Rhino Geometry.Vector3d.
+        static member inline toRhVec(v:UnitVec) = Geometry.Vector3d(v.X, v.Y, v.Z)
 
-        /// Unitize a Rhino Vector3d to Euclid 3D unit vector.
-        static member inline ofRhVec(v:Vector3d) = UnitVec.create(v.X, v.Y, v.Z)
+        /// Unitize a Rhino Geometry.Vector3d to Euclid 3D unit vector.
+        static member inline ofRhVec(v:Geometry.Vector3d) = UnitVec.create(v.X, v.Y, v.Z)
 
         /// Draw the Euclid 3D unit vector in Rhino as line with Curve Arrow.
         /// Using given start point and scale.
@@ -389,13 +389,13 @@ module AutoOpenRhinoIntegration =
     type Euclid.Line2D with
 
         /// Convert Euclid 2D Line to Rhino Line. Using 0.0 as Z value.
-        member inline l.RhLine = Line(l.FromX,l.FromY,0,l.ToX,l.ToY,0)
+        member inline l.RhLine = Geometry.Line(l.FromX,l.FromY,0,l.ToX,l.ToY,0)
 
         /// Convert Euclid 2D Line to Rhino Line. Using 0.0 as Z value.
-        static member inline toRhLine(l:Line2D) = Line(l.FromX,l.FromY,0, l.ToX,l.ToY,0)
+        static member inline toRhLine(l:Line2D) = Geometry.Line(l.FromX,l.FromY,0, l.ToX,l.ToY,0)
 
         /// Convert Rhino Line to Euclid 2D Line. Ignoring Z value.
-        static member inline ofRhLine(l:Line) = Line2D(l.FromX,l.FromY, l.ToX,l.ToY)
+        static member inline ofRhLine(l:Geometry.Line) = Line2D(l.FromX,l.FromY, l.ToX,l.ToY)
 
         /// Draw the Euclid 2D Line in Rhino on current layer.
         static member draw(l:Line2D) = Rs.AddLine(l.FromX, l.FromY, 0, l.ToX, l.ToY, 0)
@@ -460,7 +460,7 @@ module AutoOpenRhinoIntegration =
         static member drawPolyLine (rect:BRect) = Rs.AddPolyline(rect.RhPolyline)
 
         /// Convert Euclid 2D Bounding Rectangle to a closed Rhino Polyline.
-        member r.RhPolyline =  new Polyline(r.PointsLooped |> Seq.map ( fun p -> p.RhPt) )
+        member r.RhPolyline =  new Geometry.Polyline(r.PointsLooped |> Seq.map ( fun p -> p.RhPt) )
 
 
     type BBox with
@@ -490,7 +490,7 @@ module AutoOpenRhinoIntegration =
         /// Draw the Euclid 3D Bounding Box  in Rhino as Mesh on current layer.
         static member drawMesh (bbox:BBox) =
             let b: Geometry.BoundingBox = bbox.RhBBox
-            let m = Mesh.CreateFromBox(b, 1, 1, 1)
+            let m = Geometry.Mesh.CreateFromBox(b, 1, 1, 1)
             let g = State.Doc.Objects.AddMesh(m)
             if g = Guid.Empty then failwithf "Euclid.Rhino.BBox.drawMesh failed for %O" bbox
             g
@@ -534,7 +534,7 @@ module AutoOpenRhinoIntegration =
         /// Draw the Euclid 3D Box in Rhino as Mesh on current layer.
         static member drawMesh (box:Euclid.Box) =
             let b: Geometry.Box = box.RhBox
-            let m = Mesh.CreateFromBox(b, 1, 1, 1)
+            let m = Geometry.Mesh.CreateFromBox(b, 1, 1, 1)
             let g = State.Doc.Objects.AddMesh(m)
             if g = Guid.Empty then failwithf "Euclid.Rhino.Box.drawMesh failed for %O" box
             g

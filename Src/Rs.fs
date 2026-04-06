@@ -5,7 +5,7 @@
 
 open System
 open Rhino
-open Rhino.Geometry
+// open Rhino.Geometry
 
 /// OptionalAttribute for member parameters
 type internal OPT = Runtime.InteropServices.OptionalAttribute
@@ -55,12 +55,12 @@ type internal Rs private () =
         g
 
     static member AddTextDot(t,x,y,z) : Guid =
-        let g = State.Doc.Objects.AddTextDot(t, Point3d(x,y,z))
+        let g = State.Doc.Objects.AddTextDot(t, Geometry.Point3d(x,y,z))
         if g = Guid.Empty then failwithf "Euclid.Rhino.Rs.AddTextDot failed on x:%g, y:%g, z:%g" x y z
         State.Doc.Views.Redraw()
         g
 
-    static member AddTextDot(t,p:Point3d) : Guid =
+    static member AddTextDot(t,p: Geometry.Point3d) : Guid =
         let g = State.Doc.Objects.AddTextDot(t, p)
         if g = Guid.Empty then failwithf "Euclid.Rhino.Rs.AddTextDot failed on point :%O" p
         State.Doc.Views.Redraw()
@@ -70,7 +70,7 @@ type internal Rs private () =
     ///<param name="start">(Point3d) Startpoint of the line</param>
     ///<param name="ende">(Point3d) Endpoint of the line</param>
     ///<returns>(Guid) objectId of the new Curve object.</returns>
-    static member AddLine(start:Point3d, ende:Point3d) : Guid =
+    static member AddLine(start: Geometry.Point3d, ende: Geometry.Point3d) : Guid =
         let  rc = State.Doc.Objects.AddLine(start, ende)
         if rc = Guid.Empty then failwithf "Euclid.Rhino.Rs.AddLine: Unable to add line to document. start:%O ende:%O" start ende
         State.Doc.Views.Redraw()
@@ -85,8 +85,8 @@ type internal Rs private () =
     ///<param name="endZ">(float) Endpoint of the line:Z position</param>
     ///<returns>(Guid) objectId of the new Curve object.</returns>
     static member AddLine(startX,startY,startZ,endX,endY,endZ:float) : Guid =
-        let start = Point3d(startX,startY,startZ)
-        let ende = Point3d(endX,endY,endZ)
+        let start = Geometry.Point3d(startX,startY,startZ)
+        let ende = Geometry.Point3d(endX,endY,endZ)
         let  rc = State.Doc.Objects.AddLine(start, ende)
         if rc = Guid.Empty then failwithf "Euclid.Rhino.Rs.AddLine: Unable to add line to document. startX:%g ,startY:%g ,startZ:%g and endX:%g ,endY:%g ,endZ:%g" startX startY startZ endX endY endZ
         State.Doc.Views.Redraw()
@@ -99,8 +99,8 @@ type internal Rs private () =
     ///<param name="endY">(float) Endpoint of the line: Y position</param>
     ///<returns>(Guid) objectId of the new Curve object.</returns>
     static member AddLine2D(startX,startY,endX,endY:float) : Guid =
-        let start = Point3d(startX,startY,0.0)
-        let ende = Point3d(endX,endY,0.0)
+        let start = Geometry.Point3d(startX,startY,0.0)
+        let ende = Geometry.Point3d(endX,endY,0.0)
         let  rc = State.Doc.Objects.AddLine(start, ende)
         if rc = Guid.Empty then failwithf "Euclid.Rhino.Rs.AddLine2D: Unable to add line to document. startX:%g ,startY:%g  and  endX:%g ,endY:%g," startX startY  endX endY
         State.Doc.Views.Redraw()
@@ -135,13 +135,13 @@ type internal Rs private () =
             failwithf "Euclid.Rhino.Rs.CurveArrows style %d is invalid" arrowStyle
 
     /// Draws a line with a Curve Arrows from World Origin.
-    static member DrawVector( vector:Vector3d) : Guid  =
-        let l = Rs.AddLine(Point3d.Origin, Point3d.Origin + vector )
+    static member DrawVector( vector:Geometry.Vector3d) : Guid  =
+        let l = Rs.AddLine(Geometry.Point3d.Origin, Geometry.Point3d.Origin + vector )
         Rs.CurveArrows(l, 2)
         l
 
     /// Draws a line with a Curve Arrows from a given point.
-    static member DrawVector( vector:Vector3d, fromPoint:Point3d) : Guid  =
+    static member DrawVector( vector:Geometry.Vector3d, fromPoint: Geometry.Point3d) : Guid  =
         let l = Rs.AddLine(fromPoint, fromPoint + vector )
         Rs.CurveArrows(l, 2)
         l
@@ -152,7 +152,7 @@ type internal Rs private () =
     ///<param name="suffixInDot">(string) Optional, Default Value: no suffix, text to add to x textdot label do of x axis. And y and z too.</param>
     ///<param name="layer">(string) Optional, Default Value: the current layer, String for layer to draw plane on. The Layer will be created if it does not exist.</param>
     ///<returns>List of Guids of added Objects</returns>
-    static member DrawPlane(    pl:Plane,
+    static member DrawPlane(    pl:Geometry.Plane,
                                 [<OPT;DEF(1.0)>]axLength:float,
                                 [<OPT;DEF("")>]suffixInDot:string,
                                 [<OPT;DEF("")>]layer:string ) : ResizeArray<Guid>  =
@@ -177,8 +177,8 @@ type internal Rs private () =
     ///    list contains less than four points, then the first point and
     ///    last point must be different</param>
     ///<returns>(Guid) objectId of the new Curve object.</returns>
-    static member AddPolyline(points:Point3d seq) : Guid =
-        let pl = Polyline(points)
+    static member AddPolyline(points: Geometry.Point3d seq) : Guid =
+        let pl = Geometry.Polyline(points)
         let rc = State.Doc.Objects.AddPolyline(pl)
         if rc = Guid.Empty then
             let ps = points |> Seq.map string |> String.concat $"{Environment.NewLine}  "
