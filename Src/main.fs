@@ -169,10 +169,10 @@ module AutoOpenEuclidExtensions =
         static member inline ofRhPt(p: Geometry.Point3d) = Pt(p.X, p.Y)
 
         /// Draw the Euclid 2D point in Rhino on current layer.
-        static member  draw (p:Pt) = Rs.AddPoint(p.X, p.Y, 0.0)
+        static member draw (p:Pt) = Rs.AddPoint(p.X, p.Y, 0.0)
 
          /// Draw the Euclid 2D point as RhinoTextDot with given message.
-        static member  drawDot msg (p:Pt) = Rs.AddTextDot(msg, p.X, p.Y, 0.0)
+        static member drawDot msg (p:Pt) = Rs.AddTextDot(msg, p.X, p.Y, 0.0)
 
         /// Draw the Euclid 2D point in Rhino on current layer.
         member p.Draw() = Rs.AddPoint(p.X, p.Y, 0.0) |> ignore
@@ -204,10 +204,10 @@ module AutoOpenEuclidExtensions =
         static member inline ofRhPt(p: Geometry.Point3d) = Pnt(p.X, p.Y, p.Z)
 
         /// Draw the Euclid 3D point in Rhino on current layer.
-        static member  draw (p:Pnt) = Rs.AddPoint(p.X, p.Y, p.Z)
+        static member draw (p:Pnt) = Rs.AddPoint(p.X, p.Y, p.Z)
 
          /// Draw the Euclid 3D point as RhinoTextDot with given message.
-        static member  drawDot msg (p:Pnt) = Rs.AddTextDot(msg, p.X, p.Y, p.Z)
+        static member drawDot msg (p:Pnt) = Rs.AddTextDot(msg, p.X, p.Y, p.Z)
 
         /// Draw the Euclid 3D point in Rhino on current layer.
         /// The Layer will be created if it does not exist.
@@ -276,7 +276,7 @@ module AutoOpenEuclidExtensions =
 
         /// Draw the Euclid 2D unit vector in Rhino as line with Curve Arrow.
         /// Using given start point and scale.
-        static member  draw (scale:float) (fromPt:Pt) (v:UnitVc) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt)
+        static member draw (scale:float) (fromPt:Pt) (v:UnitVc) = Rs.DrawVector(v.RhVec * scale, fromPt.RhPt)
 
         /// Draw the Euclid 2D unit vector in Rhino as line with Curve Arrow.
         /// Using given start point, scale, layer and name.
@@ -466,6 +466,9 @@ module AutoOpenEuclidExtensions =
         /// Convert Euclid 2D Bounding Rectangle to a closed Rhino Polyline.
         member r.RhPolyline =  new Geometry.Polyline(r.PointsLooped |> Seq.map ( fun p -> p.RhPt) )
 
+        /// Convert Euclid 2D Bounding Rectangle to a closed Rhino Polyline.
+        static member toRhPolyline (rect:BRect) = new Geometry.Polyline(rect.PointsLooped |> Seq.map ( fun p -> p.RhPt) )
+
 
     type BBox with
 
@@ -502,6 +505,9 @@ module AutoOpenEuclidExtensions =
         /// Convert Euclid the 3D Bounding Box to a Rhino bounding box .
         member b.RhBBox = Geometry.BoundingBox(b.MinPnt.RhPt, b.MaxPnt.RhPt)
 
+        /// Convert Euclid the 3D Bounding Box to a Rhino bounding box .
+        static member toRhBBox (bbox:BBox) = Geometry.BoundingBox(bbox.MinPnt.RhPt, bbox.MaxPnt.RhPt)
+
     type Euclid.Box with
 
         /// Convert Euclid 3D Box to a Rhino box .
@@ -510,6 +516,14 @@ module AutoOpenEuclidExtensions =
             let x = Geometry.Interval(0, b.SizeX)
             let y = Geometry.Interval(0, b.SizeY)
             let z = Geometry.Interval(0, b.SizeZ)
+            Geometry.Box(pl,x,y,z)
+
+
+        static member toRhBox (box:Euclid.Box) =
+            let pl = box.Plane.RhPlane
+            let x = Geometry.Interval(0, box.SizeX)
+            let y = Geometry.Interval(0, box.SizeY)
+            let z = Geometry.Interval(0, box.SizeZ)
             Geometry.Box(pl,x,y,z)
 
         /// Draw the Euclid 3D  Box in Rhino as Polyline with 10 vertices.
@@ -621,6 +635,17 @@ module AutoOpenEuclidExtensions =
         member r.RhSurface =
             Geometry.NurbsSurface.CreateFromCorners(r.Pt0.RhPt, r.Pt1.RhPt, r.Pt2.RhPt, r.Pt3.RhPt)
 
+        static member toRhSurface (rect:Rect3D) =
+            Geometry.NurbsSurface.CreateFromCorners(rect.Pt0.RhPt, rect.Pt1.RhPt, rect.Pt2.RhPt, rect.Pt3.RhPt)
+
+        static member toRhPolyline (rect:Rect3D) =
+            let pts = rect.PointsLooped |> Seq.map Pnt.toRhPt
+            new Geometry.Polyline(pts)
+
+        static member toRhPolylineCurve (rect:Rect3D) =
+            let pts = rect.PointsLooped |> Seq.map Pnt.toRhPt
+            new Geometry.PolylineCurve(pts)
+
     type Rect2D with
 
         /// Convert Euclid 2D Rectangle to a closed Rhino Polyline in World XY Plane.
@@ -636,6 +661,19 @@ module AutoOpenEuclidExtensions =
         /// Convert Euclid 2D Rectangle to a Rhino Surface in World XY Plane.
         member r.RhSurface =
             Geometry.NurbsSurface.CreateFromCorners(r.Pt0.RhPt, r.Pt1.RhPt, r.Pt2.RhPt, r.Pt3.RhPt)
+
+
+        static member toRhSurface (rect:Rect2D) =
+            Geometry.NurbsSurface.CreateFromCorners(rect.Pt0.RhPt, rect.Pt1.RhPt, rect.Pt2.RhPt, rect.Pt3.RhPt)
+
+        static member toRhPolyline (rect:Rect2D) =
+            let pts = rect.PointsLooped |> Seq.map Pt.toRhPt
+            new Geometry.Polyline(pts)
+
+        static member toRhPolylineCurve (rect:Rect2D) =
+            let pts = rect.PointsLooped |> Seq.map Pt.toRhPt
+            new Geometry.PolylineCurve(pts)
+
 
 
 /// A module for drawing Euclid 2D geometry in Rhino.
