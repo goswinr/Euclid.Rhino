@@ -8,9 +8,8 @@ open Rhino
 /// If this module is opened then you can
 /// convert Rhino points and vectors and Euclid points and vectors to each other
 /// via new static and instance members on these types.
-/// Call setupEuclidDebugFunctions() to set the functions on the modules Euclid.Debug3D and Euclid.Debug2D to draw in Rhino.
 [<AutoOpen>]
-module AutoOpenRhinoIntegration =
+module AutoOpenRhinoTypeExtensions =
 
 
     // -----------------------------------------------------------------------
@@ -142,10 +141,15 @@ module AutoOpenRhinoIntegration =
         static member toPolyline2D(p:Geometry.Polyline) = Polyline2D.create(Seq.map Geometry.Point3d.toPt p)
 
 
-    // -----------------------------------------------------------------------
-    // --------------------Extensions on Euclid types- ------------------------
-    // -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+// --------------------Extensions on Euclid types- ------------------------
+// -----------------------------------------------------------------------
 
+/// If this module is opened then you can
+/// convert Rhino points and vectors and Euclid points and vectors to each other
+/// via new static and instance members on these types.
+[<AutoOpen>]
+module AutoOpenEuclidExtensions =
 
     type Pt with
 
