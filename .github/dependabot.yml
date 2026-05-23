@@ -5,6 +5,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7
 
 
   # Update to newer NuGet dependencies
@@ -21,4 +23,6 @@ updates:
       - dependency-name: "FSharp.Core"
       - dependency-name: "RhinoCommon"
       - dependency-name: "Eto.Forms"
+    cooldown:
+      default-days: 7
 
