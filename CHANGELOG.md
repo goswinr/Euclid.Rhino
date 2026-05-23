@@ -75,20 +75,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - align with Euclid 0.2.0
 
-[Unreleased]: https://github.com/goswinr/Euclid.Rhino/compare/v0.30.1...HEAD
-[0.30.1]: https://github.com/goswinr/Euclid.Rhino/compare/v0.20.0...v0.30.1
-[0.20.0]: https://github.com/goswinr/Euclid.Rhino/compare/v0.20.0-beta3...v0.20.0
-[0.20.0-beta3]: https://github.com/goswinr/Euclid.Rhino/compare/v0.15.0...v0.20.0-beta3
-[0.15.0]: https://github.com/goswinr/Euclid.Rhino/compare/v0.14.0...v0.15.0
-[0.14.0]: https://github.com/goswinr/Euclid.Rhino/compare/v0.13.0...v0.14.0
-[0.13.0]: https://github.com/goswinr/Euclid.Rhino/compare/v0.10.0...v0.13.0
-[0.10.0]: https://github.com/goswinr/Euclid.Rhino/compare/v0.9.0...v0.10.0
-[0.9.0]: https://github.com/goswinr/Euclid.Rhino/compare/v0.7.0...v0.9.0
-[0.7.0]: https://github.com/goswinr/Euclid.Rhino/compare/v0.6.1...v0.7.0
-[0.6.1]: https://github.com/goswinr/Euclid.Rhino/compare/v0.5.0...v0.6.1
-[0.5.0]: https://github.com/goswinr/Euclid.Rhino/compare/v0.4.1...v0.5.0
-[0.4.1]: https://github.com/goswinr/Euclid.Rhino/compare/v0.4.0...v0.4.1
-[0.4.0]: https://github.com/goswinr/Euclid.Rhino/compare/v0.3.0...v0.4.0
-[0.3.0]: https://github.com/goswinr/Euclid.Rhino/compare/v0.2.0...v0.3.0
-[0.2.0]: https://github.com/goswinr/Euclid.Rhino/releases/tag/v0.2.0
+[Unreleased]: https://github.com/goswinr/Euclid.Rhino/compare/0.30.1...HEAD
+[0.30.1]: https://github.com/goswinr/Euclid.Rhino/compare/0.20.0...0.30.1
+[0.20.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.20.0-beta3...0.20.0
+[0.20.0-beta3]: https://github.com/goswinr/Euclid.Rhino/compare/0.15.0...0.20.0-beta3
+[0.15.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.14.0...0.15.0
+[0.14.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.13.0...0.14.0
+[0.13.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.10.0...0.13.0
+[0.10.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.9.0...0.10.0
+[0.9.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.7.0...0.9.0
+[0.7.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.6.1...0.7.0
+[0.6.1]: https://github.com/goswinr/Euclid.Rhino/compare/0.5.0...0.6.1
+[0.5.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.4.1...0.5.0
+[0.4.1]: https://github.com/goswinr/Euclid.Rhino/compare/0.4.0...0.4.1
+[0.4.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.3.0...0.4.0
+[0.3.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.2.0...0.3.0
+[0.2.0]: https://github.com/goswinr/Euclid.Rhino/releases/tag/0.2.0
 
