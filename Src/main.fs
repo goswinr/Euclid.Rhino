@@ -562,13 +562,18 @@ module AutoOpenEuclidExtensions =
 
         /// Convert Euclid 3D Polyline to a Rhino Polyline .
         member p.RhPolyline =
-            let pts = p.Points |> Seq.map Pnt.toRhPt
-            new Geometry.Polyline(pts)
+            let pl = Geometry.Polyline(p.PointCount)
+            let mutable i = 0
+            let xys = p.XYZs
+            let cnt = xys.Count
+            while i < cnt do
+                pl.Add(Geometry.Point3d(xys[i], xys[i + 1], xys[i + 2]))
+                i <- i + 3
+            pl
 
         /// Convert Euclid 3D Polyline to a Rhino Polyline .
         member p.RhPolylineCurve =
-            let pts = p.Points |> Seq.map Pnt.toRhPt
-            new Geometry.PolylineCurve(pts)
+            new Geometry.PolylineCurve(p.RhPolyline)
 
 
         /// Draw Euclid 3D Polyline in  Rhino.
@@ -587,19 +592,30 @@ module AutoOpenEuclidExtensions =
     type Polyline2D with
 
         /// Convert Euclid 2D Polyline to a Rhino Polyline in World XY Plane.
-        member pl.RhPolyline =
-            let pts = pl.Points |> Seq.map Pt.toRhPt
-            new Geometry.Polyline(pts)
+        member p.RhPolyline =
+            let pl = Geometry.Polyline(p.PointCount)
+            let mutable i = 0
+            let xys = p.XYs
+            let cnt = xys.Count
+            while i < cnt do
+                pl.Add(Geometry.Point3d(xys[i], xys[i + 1], 0.0))
+                i <- i + 2
+            pl
 
         /// Convert Euclid 2D Polyline to a Rhino PolylineCurve in World XY Plane.
-        member pl.RhPolylineCurve =
-            let pts = pl.Points |> Seq.map Pt.toRhPt
-            new Geometry.PolylineCurve(pts)
+        member p.RhPolylineCurve =
+            new Geometry.PolylineCurve(p.RhPolyline)
 
         /// Convert Euclid 2D Polyline to a Rhino Polyline at Given Z level.
-        member pl.RhPolylineZ(z) =
-            let pts = pl.Points |> Seq.map (Pt.toRhPtZ z)
-            new Geometry.Polyline(pts)
+        member p.RhPolylineZ(z) =
+            let pl = Geometry.Polyline(p.PointCount)
+            let mutable i = 0
+            let xys = p.XYs
+            let cnt = xys.Count
+            while i < cnt do
+                pl.Add(Geometry.Point3d(xys[i], xys[i + 1], z))
+                i <- i + 2
+            pl
 
         /// Draw Euclid 2D Polyline in Rhino in World XY Plane.
         static member draw (p:Polyline2D) = Rs.AddPolyline p.RhPolyline
