@@ -29,8 +29,8 @@ open Euclid
 This will auto-open the module `AutoOpenRhinoIntegration`<br>
 You will get access to all the extension methods for Rhino integration.
 
-See [goswinr.github.io/Euclid.Rhino](https://goswinr.github.io/Euclid.Rhino/reference/euclid-autoopenrhinointegration.html) for the full documentation.<br>
-For the main functions you can also look at [main.fs](https://github.com/goswinr/Euclid.Rhino/blob/main/main.fs) .<br>
+See [goswinr.github.io/Euclid.Rhino](https://goswinr.github.io/Euclid.Rhino/reference/euclid-autoopeneuclidextensions.html) for the full documentation.<br>
+For the main functions you can also look at [main.fs](https://github.com/goswinr/Euclid.Rhino/blob/main/Src/main.fs) .<br>
 
 ## Sample Code
 
