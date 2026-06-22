@@ -1,4 +1,4 @@
-﻿namespace Euclid
+namespace Euclid
 
 open System
 open EuclidRhino
@@ -129,16 +129,16 @@ module AutoOpenRhinoTypeExtensions =
     type Geometry.Polyline with
 
         /// Convert a Rhino.Geometry.Polyline to a Euclid 3D polyline.
-        member p.Polyline3D = Polyline3D.create(Seq.map Geometry.Point3d.toPnt p)
+        member p.Polyline3D = Polyline3D.createFromPts(Seq.map Geometry.Point3d.toPnt p)
 
         /// Convert a Rhino.Geometry.Polyline to a Euclid 3D polyline.
-        static member toPolyline3D(p:Geometry.Polyline) = Polyline3D.create(Seq.map Geometry.Point3d.toPnt p)
+        static member toPolyline3D(p:Geometry.Polyline) = Polyline3D.createFromPts(Seq.map Geometry.Point3d.toPnt p)
 
         /// Convert a Rhino.Geometry.Polyline to a Euclid 2D polyline. Ignoring the Z component.
-        member p.Polyline2D = Polyline2D.create(Seq.map Geometry.Point3d.toPt p)
+        member p.Polyline2D = Polyline2D.createFromPts(Seq.map Geometry.Point3d.toPt p)
 
         /// Convert a Rhino.Geometry.Polyline to a Euclid 2D polyline. Ignoring the Z component.
-        static member toPolyline2D(p:Geometry.Polyline) = Polyline2D.create(Seq.map Geometry.Point3d.toPt p)
+        static member toPolyline2D(p:Geometry.Polyline) = Polyline2D.createFromPts(Seq.map Geometry.Point3d.toPt p)
 
 
 // -----------------------------------------------------------------------
@@ -586,7 +586,7 @@ module AutoOpenEuclidExtensions =
         static member inline toRhPolylineCurve (p:Polyline3D) = p.RhPolylineCurve
 
         /// Convert Rhino Polyline to Euclid 3D Polyline.
-        static member inline ofRhPolyline (p:Geometry.Polyline) = p|> Seq.map Pnt.ofRhPt |> Polyline3D.create
+        static member inline ofRhPolyline (p:Geometry.Polyline) = p|> Seq.map Pnt.ofRhPt |> Polyline3D.createFromPts
 
 
     type Polyline2D with
@@ -633,7 +633,7 @@ module AutoOpenEuclidExtensions =
         static member inline toRhPolylineZ z (p:Polyline2D) = p.RhPolylineZ z
 
         /// Convert Rhino Polyline to Euclid 2D Polyline  ignoring Z values.
-        static member inline ofRhPolyline (p:Geometry.Polyline) = p|> Seq.map Pt.ofRhPt |> Polyline2D.create
+        static member inline ofRhPolyline (p:Geometry.Polyline) = p|> Seq.map Pt.ofRhPt |> Polyline2D.createFromPts
 
     type Rect3D with
 
