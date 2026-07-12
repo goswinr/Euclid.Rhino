@@ -99,8 +99,7 @@ Just run `dotnet build` in the root directory.
 
 ## Use of AI and LLMs
 All core function are are written by hand to ensure performance and correctness.<br>
-However, AI tools have been used for code review, typo and grammar checking in documentation<br>
-and to generate not all but many of the tests.
+However, AI tools have been used for code review, typo and grammar checking in documentation.
 
 ## License
 [MIT](https://github.com/goswinr/Euclid.Rhino/blob/main/LICENSE.md)
