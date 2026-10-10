@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.52.0] - 2026-10-10
+### Changed
+- update to pull in Euclid 0.52.0
+
 ## [0.51.0] - 2026-07-31
 ### Changed
 - update to pull in Euclid 0.51.0
@@ -92,7 +96,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - align with Euclid 0.2.0
 
-[Unreleased]: https://github.com/goswinr/Euclid.Rhino/compare/0.50.0...HEAD
+[Unreleased]: https://github.com/goswinr/Euclid.Rhino/compare/0.52.0...HEAD
+[0.52.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.51.0...0.52.0
+[0.51.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.50.0...0.51.0
 [0.50.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.42.0...0.50.0
 [0.42.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.40.0...0.42.0
 [0.40.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.30.1...0.40.0
