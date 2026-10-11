@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- Draw box polylines using the documented ten-vertex sequence, closing both faces without a diagonal.
 - Dispatch complete drawing operations, including layers, attributes and groups, to Rhino's UI thread.
 - Preserve interval offsets when converting Rhino boxes to Euclid boxes.
 

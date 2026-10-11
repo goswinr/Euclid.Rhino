@@ -497,7 +497,7 @@ module AutoOpenEuclidExtensions =
         static member drawPolyLine (bbox:BBox) =
             State.DoSync(fun () ->
                 let pts = seq{ bbox.Pt0; bbox.Pt1; bbox.Pt2; bbox.Pt3; bbox.Pt0; bbox.Pt4; bbox.Pt5; bbox.Pt6; bbox.Pt7; bbox.Pt4 }
-                Rs.AddPolyline(bbox.Points |> Seq.map ( fun p -> p.RhPt))
+                Rs.AddPolyline(pts |> Seq.map ( fun p -> p.RhPt))
             )
 
         /// Draw the Euclid 3D Bounding Box  in Rhino as Mesh on current layer.
@@ -556,7 +556,7 @@ module AutoOpenEuclidExtensions =
         static member drawPolyLine (box:Euclid.Box) =
             State.DoSync(fun () ->
                 let pts = seq{ box.Pt0; box.Pt1; box.Pt2; box.Pt3; box.Pt0; box.Pt4; box.Pt5; box.Pt6; box.Pt7; box.Pt4 }
-                Rs.AddPolyline(box.Points |> Seq.map ( fun p -> p.RhPt))
+                Rs.AddPolyline(pts |> Seq.map ( fun p -> p.RhPt))
             )
 
         /// Draw the Euclid 3D Box in Rhino as Mesh on current layer.
