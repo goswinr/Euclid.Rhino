@@ -120,10 +120,14 @@ module AutoOpenRhinoTypeExtensions =
     type Geometry.Box with
 
         /// Convert a Rhino.Geometry.Box to a Euclid box.
-        member b.BoxEuclid = Euclid.Box.createFromPlane b.X.Length b.Y.Length b.Z.Length b.Plane.PPlane
+        member b.BoxEuclid =
+            let p = b.Plane
+            let origin = p.Origin + p.XAxis * b.X.T0 + p.YAxis * b.Y.T0 + p.ZAxis * b.Z.T0
+            let plane = PPlane.createOriginXaxisYaxis(origin.Pnt, p.XAxis.Vec, p.YAxis.Vec)
+            Euclid.Box.createFromPlane b.X.Length b.Y.Length b.Z.Length plane
 
         /// Convert a Rhino.Geometry.Box to a Euclid box.
-        static member toBoxEuclid(b:Geometry.Box) = Euclid.Box.createFromPlane b.X.Length b.Y.Length b.Z.Length b.Plane.PPlane
+        static member toBoxEuclid(b:Geometry.Box) = b.BoxEuclid
 
 
     type Geometry.Polyline with

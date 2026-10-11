@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Preserve interval offsets when converting Rhino boxes to Euclid boxes.
+
 ## [0.52.0] - 2026-10-10
 ### Changed
 - update to pull in Euclid 0.52.0
