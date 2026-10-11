@@ -21,10 +21,10 @@ Versioning is automated via `Ionide.KeepAChangelog.Tasks` from [CHANGELOG.md](CH
 1. [Src/State.fs](Src/State.fs) - Internal singleton managing active `RhinoDoc`, UI thread sync
 2. [Src/Util.fs](Src/Util.fs) - Internal helpers: `ColorUtil` (HSL colors for layers), `UtilLayer` (layer management)
 3. [Src/Rs.fs](Src/Rs.fs) - Internal static class wrapping RhinoCommon object creation (`AddPoint`, `AddLine`, etc.)
-4. [Src/main.fs](Src/main.fs) - **Public API**: `AutoOpenRhinoIntegration` module with type extensions
+4. [Src/main.fs](Src/main.fs) - **Public API**: `AutoOpenRhinoTypeExtensions` and `AutoOpenEuclidExtensions` modules with type extensions
 
 ### Namespace Convention
-- **Public types**: `namespace Euclid` with `[<AutoOpen>]` on `AutoOpenRhinoIntegration`
+- **Public types**: `namespace Euclid` with `[<AutoOpen>]` on both type extension modules
 - **Internal helpers**: `namespace EuclidRhino` (not exposed to consumers)
 
 ## Code Patterns
@@ -44,7 +44,7 @@ type Pnt with
 ```
 
 ### Draw Methods Pattern
-Every drawable type has multiple `Draw` overloads:
+Point and line types have multiple `Draw` overloads (other types have their own drawing APIs):
 ```fsharp
 static member draw(x:Type)                    // Curried for piping: |> Type.draw
 member x.Draw()                               // No layer (current layer)

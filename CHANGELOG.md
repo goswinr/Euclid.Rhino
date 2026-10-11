@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- Remove the unused Bash-only repository-name step from the Windows NuGet release workflow.
 - Correct README drawing examples and auto-open module names, and document Rhino host and reference requirements.
 - Allow 3D origins in `Vec.draw`, `UnitVec.draw` and `UnitVec.Draw`. The curried `draw` functions now require `Pnt`; callers using `Pt` can use `drawFromPt`. Existing `UnitVec.Draw` overloads accepting `Pt` remain available.
 - Draw box polylines using the documented ten-vertex sequence, closing both faces without a diagonal.
