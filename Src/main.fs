@@ -315,7 +315,10 @@ module AutoOpenEuclidExtensions =
 
         /// Draw the Euclid 3D vector in Rhino as line with Curve Arrow.
         /// Using given start point and scale.
-        static member draw (scale:float) (fromPt:Pt) (v:Vec) = State.DoSync(fun () -> Rs.DrawVector(v.RhVec * scale, fromPt.RhPt))
+        static member draw (scale:float) (fromPt:Pnt) (v:Vec) = State.DoSync(fun () -> Rs.DrawVector(v.RhVec * scale, fromPt.RhPt))
+
+        /// Draw the Euclid 3D vector from a 2D point at Z=0, using the given scale.
+        static member drawFromPt (scale:float) (fromPt:Pt) (v:Vec) = State.DoSync(fun () -> Rs.DrawVector(v.RhVec * scale, fromPt.RhPt))
 
         /// Draw the Euclid 3D vector in Rhino with given start point, scale, layer and name.
         /// The Layer will be created if it does not exist.
@@ -348,7 +351,25 @@ module AutoOpenEuclidExtensions =
 
         /// Draw the Euclid 3D unit vector in Rhino as line with Curve Arrow.
         /// Using given start point and scale.
-        static member draw (scale:float) (fromPt:Pt) (v:UnitVec) = State.DoSync(fun () -> Rs.DrawVector(v.RhVec * scale, fromPt.RhPt))
+        static member draw (scale:float) (fromPt:Pnt) (v:UnitVec) = State.DoSync(fun () -> Rs.DrawVector(v.RhVec * scale, fromPt.RhPt))
+
+        /// Draw the Euclid 3D unit vector from a 2D point at Z=0, using the given scale.
+        static member drawFromPt (scale:float) (fromPt:Pt) (v:UnitVec) = State.DoSync(fun () -> Rs.DrawVector(v.RhVec * scale, fromPt.RhPt))
+
+        /// Draw the Euclid 3D unit vector from a 3D point, using the given scale, layer and name.
+        /// The layer will be created if it does not exist.
+        member v.Draw(fromPt:Pnt, scale:float, layer, name) = State.DoSync(fun () -> Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> Rs.setLayerAndName layer name)
+
+        /// Draw the Euclid 3D unit vector from a 3D point, using the given scale and layer.
+        /// The layer will be created if it does not exist.
+        member v.Draw(fromPt:Pnt, scale:float, layer) = State.DoSync(fun () -> Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> Rs.setLayer layer)
+
+        /// Draw the Euclid 3D unit vector from a 3D point on the given layer.
+        /// The layer will be created if it does not exist.
+        member v.Draw(fromPt:Pnt, layer:string) = State.DoSync(fun () -> Rs.DrawVector(v.RhVec, fromPt.RhPt) |> Rs.setLayer layer)
+
+        /// Draw the Euclid 3D unit vector from a 3D point, using the given scale.
+        member v.Draw(fromPt:Pnt, scale:float) = State.DoSync(fun () -> Rs.DrawVector(v.RhVec * scale, fromPt.RhPt) |> ignore)
 
         /// Draw the Euclid 3D unit vector in Rhino as line with Curve Arrow.
         /// Using given start point, scale, layer and name.
