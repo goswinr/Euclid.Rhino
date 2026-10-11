@@ -60,12 +60,6 @@ type internal State private () =
 
     static member DoSync (func:unit->'T) : 'T =
         if RhinoApp.InvokeRequired then
-            if isNull Threading.SynchronizationContext.Current then
-                Eto.Forms.Application.Instance.Invoke func
-            else
-                async{
-                    do! Async.SwitchToContext Threading.SynchronizationContext.Current
-                    return func()
-                    } |> Async.RunSynchronously
+            Eto.Forms.Application.Instance.Invoke func
         else
             func()
