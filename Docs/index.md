@@ -19,6 +19,8 @@ The version number of `Euclid.Rhino` is aligned with the referenced version of `
 
 ## How to use
 
+Drawing requires an active document inside Rhino. Use `net48` for Rhino 7 or `net8.0` for Rhino 8 running .NET 8.<br>
+Reference RhinoCommon separately in your project, or use the reference provided by your Rhino scripting host.<br>
 After referencing the package [Euclid.Rhino](https://www.nuget.org/packages/Euclid.Rhino/) in your project or F# script<br>
 just open the Euclid namespace:
 
@@ -26,7 +28,7 @@ just open the Euclid namespace:
 open Euclid
 ```
 
-This will auto-open the module `AutoOpenRhinoIntegration`<br>
+This will auto-open the modules `AutoOpenRhinoTypeExtensions` and `AutoOpenEuclidExtensions`.<br>
 You will get access to all the extension methods for Rhino integration.
 
 See [goswinr.github.io/Euclid.Rhino](https://goswinr.github.io/Euclid.Rhino/reference/euclid-autoopeneuclidextensions.html) for the full documentation.<br>
@@ -80,14 +82,17 @@ pt.DrawDot("Start")
 
 // Functional style for piping
 let points = [Pnt(0,0,0); Pnt(1,0,0); Pnt(1,1,0)]
-points |> List.iter Pnt.draw
+points |> List.iter (Pnt.draw >> ignore)
 
 // Draw lines and polylines
 let ln = Line3D(Pnt.Origin, Pnt(10.0, 10.0, 0.0))
 ln.Draw("layer name")
 
-let poly = Polyline3D.create points
-poly.Draw("layer name", "Object Name")
+let poly = Polyline3D.createFromPts points
+poly |> Polyline3D.draw |> ignore
+
+// Draw a polyline on a specific layer
+Debug3D.drawPolyLineLayer(points, "layer name")
 ```
 
 ## Changelog
@@ -98,8 +103,8 @@ Just run `dotnet build` in the root directory.
 
 
 ## Use of AI and LLMs
-All core function are are written by hand to ensure performance and correctness.<br>
-However, AI tools have been used for code review, typo and grammar checking in documentation.
+The core geometry library was originally written by hand.<br>
+AI tools have also been used for code review, fixes, tests and documentation.
 
 ## License
 [MIT](https://github.com/goswinr/Euclid.Rhino/blob/main/LICENSE.md)
