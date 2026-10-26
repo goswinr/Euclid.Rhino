@@ -1,6 +1,7 @@
 namespace Euclid
 
 open System
+open System.ComponentModel
 open EuclidRhino
 open Rhino
 // open Rhino.Geometry
@@ -8,7 +9,7 @@ open Rhino
 /// If this module is opened then you can
 /// convert Rhino points and vectors and Euclid points and vectors to each other
 /// via new static and instance members on these types.
-[<AutoOpen>]
+[<AutoOpen; EditorBrowsable(EditorBrowsableState.Never)>]
 module AutoOpenRhinoTypeExtensions =
 
 
@@ -152,7 +153,7 @@ module AutoOpenRhinoTypeExtensions =
 /// If this module is opened then you can
 /// convert Rhino points and vectors and Euclid points and vectors to each other
 /// via new static and instance members on these types.
-[<AutoOpen>]
+[<AutoOpen; EditorBrowsable(EditorBrowsableState.Never)>]
 module AutoOpenEuclidExtensions =
 
     type Pt with
