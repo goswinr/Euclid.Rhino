@@ -55,10 +55,10 @@ module AutoOpenRhinoTypeExtensions =
         member inline v.Vec = Vec( v.X,  v.Y,  v.Z)
 
         /// Convert a Rhino.Geometry.Vector3d to a Euclid 2D unitized vector, ignoring the Z component.
-        member inline v.UnitVc = UnitVc.create( v.X, v.Y)
+        member inline v.UnitVc = UnitVc.create v.X v.Y
 
         /// Convert a Rhino.Geometry.Vector3d to a Euclid 3D unitized vector.
-        member inline v.UnitVec = UnitVec.create( v.X,  v.Y, v.Z)
+        member inline v.UnitVec = UnitVec.create v.X v.Y v.Z
 
         /// Convert a Rhino.Geometry.Vector3d to a Euclid 2D vector, ignoring the Z component.
         static member inline toVc (v:Geometry.Vector3d) = Vc( v.X,  v.Y)
@@ -74,10 +74,10 @@ module AutoOpenRhinoTypeExtensions =
         member inline v.Vec = Vec(float v.X, float v.Y, float v.Z)
 
         /// Convert a Rhino.Geometry.Vector3f to a Euclid 2D unitized vector, ignoring the Z component.
-        member inline v.UnitVc = UnitVc.create(float v.X, float v.Y)
+        member inline v.UnitVc = UnitVc.create (float v.X) (float v.Y)
 
         /// Convert a Rhino.Geometry.Vector3f to a Euclid 3D unitized vector.
-        member inline v.UnitVec = UnitVec.create(float v.X, float v.Y, float v.Z)
+        member inline v.UnitVec = UnitVec.create (float v.X) (float v.Y) (float v.Z)
 
         /// Convert a Rhino.Geometry.Vector3f to a Euclid 2D vector, ignoring the Z component.
         static member inline toVc (v:Geometry.Vector3f) = Vc(float v.X, float v.Y)
@@ -101,22 +101,22 @@ module AutoOpenRhinoTypeExtensions =
 
     type Geometry.Plane with
         /// Convert a Rhino.Geometry.Plane to a Euclid parametrized plane.
-        member p.PPlane = PPlane.createOriginXaxisYaxis (p.Origin.Pnt, p.XAxis.Vec, p.YAxis.Vec)
+        member p.PPlane = PPlane.createFromXAxisAndYAxis p.XAxis.Vec p.YAxis.Vec p.Origin.Pnt
 
         /// Convert a Rhino.Geometry.Plane to a Euclid parametrized plane.
-        static member toPPlane(p:Geometry.Plane) = PPlane.createOriginXaxisYaxis (p.Origin.Pnt, p.XAxis.Vec, p.YAxis.Vec)
+        static member toPPlane(p:Geometry.Plane) = PPlane.createFromXAxisAndYAxis p.XAxis.Vec p.YAxis.Vec p.Origin.Pnt
 
     type Geometry.BoundingBox with
 
         /// Convert a Rhino.Geometry.BoundingBox to a Euclid bounding box.
         /// Reordering the bounding box minX, minY, minZ, maxX, maxY and maxZ if they are not in the increasing from min to max values.
         /// Rhino.Geometry.BoundingBoxes can be inverted. Euclid BBoxes not.
-        member b.BBox = BBox.create(b.Min.Pnt, b.Max.Pnt)
+        member b.BBox = BBox.create b.Min.Pnt b.Max.Pnt
 
         /// Convert a Rhino.Geometry.BoundingBox to a Euclid bounding box.
         /// Reordering the bounding box minX, minY, minZ, maxX, maxY and maxZ if they are not in the increasing from min to max values.
         /// Rhino.Geometry.BoundingBoxes can be inverted. Euclid BBoxes not.
-        static member toBBox(b:Geometry.BoundingBox) = BBox.create(b.Min.Pnt, b.Max.Pnt)
+        static member toBBox(b:Geometry.BoundingBox) = BBox.create b.Min.Pnt b.Max.Pnt
 
     type Geometry.Box with
 
@@ -124,7 +124,7 @@ module AutoOpenRhinoTypeExtensions =
         member b.BoxEuclid =
             let p = b.Plane
             let origin = p.Origin + p.XAxis * b.X.T0 + p.YAxis * b.Y.T0 + p.ZAxis * b.Z.T0
-            let plane = PPlane.createOriginXaxisYaxis(origin.Pnt, p.XAxis.Vec, p.YAxis.Vec)
+            let plane = PPlane.createFromXAxisAndYAxis p.XAxis.Vec p.YAxis.Vec origin.Pnt
             Euclid.Box.createFromPlane b.X.Length b.Y.Length b.Z.Length plane
 
         /// Convert a Rhino.Geometry.Box to a Euclid box.
@@ -134,10 +134,10 @@ module AutoOpenRhinoTypeExtensions =
     type Geometry.Polyline with
 
         /// Convert a Rhino.Geometry.Polyline to a Euclid 3D polyline.
-        member p.Polyline3D = Polyline3D.createFromPts(Seq.map Geometry.Point3d.toPnt p)
+        member p.Polyline3D = Polyline3D.createFromPnts(Seq.map Geometry.Point3d.toPnt p)
 
         /// Convert a Rhino.Geometry.Polyline to a Euclid 3D polyline.
-        static member toPolyline3D(p:Geometry.Polyline) = Polyline3D.createFromPts(Seq.map Geometry.Point3d.toPnt p)
+        static member toPolyline3D(p:Geometry.Polyline) = Polyline3D.createFromPnts(Seq.map Geometry.Point3d.toPnt p)
 
         /// Convert a Rhino.Geometry.Polyline to a Euclid 2D polyline. Ignoring the Z component.
         member p.Polyline2D = Polyline2D.createFromPts(Seq.map Geometry.Point3d.toPt p)
@@ -277,7 +277,7 @@ module AutoOpenEuclidExtensions =
         static member inline toRhVec(v:UnitVc) = Geometry.Vector3d(v.X, v.Y, 0.0)
 
         /// Unitize a Rhino Geometry.Vector3d to Euclid 2D unit vector, ignoring Z value.
-        static member inline ofRhVec(v:Geometry.Vector3d) = UnitVc.create(v.X, v.Y)
+        static member inline ofRhVec(v:Geometry.Vector3d) = UnitVc.create v.X v.Y
 
         /// Draw the Euclid 2D unit vector in Rhino as line with Curve Arrow.
         /// Using given start point and scale.
@@ -348,7 +348,7 @@ module AutoOpenEuclidExtensions =
         static member inline toRhVec(v:UnitVec) = Geometry.Vector3d(v.X, v.Y, v.Z)
 
         /// Unitize a Rhino Geometry.Vector3d to Euclid 3D unit vector.
-        static member inline ofRhVec(v:Geometry.Vector3d) = UnitVec.create(v.X, v.Y, v.Z)
+        static member inline ofRhVec(v:Geometry.Vector3d) = UnitVec.create v.X v.Y v.Z
 
         /// Draw the Euclid 3D unit vector in Rhino as line with Curve Arrow.
         /// Using given start point and scale.
@@ -449,13 +449,13 @@ module AutoOpenEuclidExtensions =
     type PPlane with
 
         /// Convert Euclid PPlane to Rhino Plane.
-        member p.RhPlane = Geometry.Plane(p.Origin.RhPt, p.Xaxis.RhVec, p.Yaxis.RhVec)
+        member p.RhPlane = Geometry.Plane(p.Origin.RhPt, p.XAxis.RhVec, p.YAxis.RhVec)
 
         /// Convert Euclid PPlane to Rhino Plane.
-        static member inline toRhPlane(p:PPlane) = Geometry.Plane(p.Origin.RhPt, p.Xaxis.RhVec, p.Yaxis.RhVec)
+        static member inline toRhPlane(p:PPlane) = Geometry.Plane(p.Origin.RhPt, p.XAxis.RhVec, p.YAxis.RhVec)
 
         /// Convert Rhino Plane to Euclid PPlane.
-        static member inline ofRhPlane(p:Geometry.Plane) = PPlane.createOriginXaxisYaxis (p.Origin.Pnt,  p.XAxis.Vec, p.YAxis.Vec)
+        static member inline ofRhPlane(p:Geometry.Plane) = PPlane.createFromXAxisAndYAxis p.XAxis.Vec p.YAxis.Vec p.Origin.Pnt
 
         ///<summary>Draws the axes of the PPlane and adds TextDots to label them.</summary>
         ///<param name="axLength">The length  of the drawn lines</param>
@@ -518,7 +518,7 @@ module AutoOpenEuclidExtensions =
         ///   0 MinPt         1
         static member drawPolyLine (bbox:BBox) =
             State.DoSync(fun () ->
-                let pts = seq{ bbox.Pt0; bbox.Pt1; bbox.Pt2; bbox.Pt3; bbox.Pt0; bbox.Pt4; bbox.Pt5; bbox.Pt6; bbox.Pt7; bbox.Pt4 }
+                let pts = seq{ bbox.Pnt0; bbox.Pnt1; bbox.Pnt2; bbox.Pnt3; bbox.Pnt0; bbox.Pnt4; bbox.Pnt5; bbox.Pnt6; bbox.Pnt7; bbox.Pnt4 }
                 Rs.AddPolyline(pts |> Seq.map ( fun p -> p.RhPt))
             )
 
@@ -577,7 +577,7 @@ module AutoOpenEuclidExtensions =
         ///   0               1
         static member drawPolyLine (box:Euclid.Box) =
             State.DoSync(fun () ->
-                let pts = seq{ box.Pt0; box.Pt1; box.Pt2; box.Pt3; box.Pt0; box.Pt4; box.Pt5; box.Pt6; box.Pt7; box.Pt4 }
+                let pts = seq{ box.Pnt0; box.Pnt1; box.Pnt2; box.Pnt3; box.Pnt0; box.Pnt4; box.Pnt5; box.Pnt6; box.Pnt7; box.Pnt4 }
                 Rs.AddPolyline(pts |> Seq.map ( fun p -> p.RhPt))
             )
 
@@ -620,7 +620,7 @@ module AutoOpenEuclidExtensions =
         static member inline toRhPolylineCurve (p:Polyline3D) = p.RhPolylineCurve
 
         /// Convert Rhino Polyline to Euclid 3D Polyline.
-        static member inline ofRhPolyline (p:Geometry.Polyline) = p|> Seq.map Pnt.ofRhPt |> Polyline3D.createFromPts
+        static member inline ofRhPolyline (p:Geometry.Polyline) = p|> Seq.map Pnt.ofRhPt |> Polyline3D.createFromPnts
 
 
     type Polyline2D with
@@ -683,10 +683,10 @@ module AutoOpenEuclidExtensions =
 
         /// Convert Euclid 2D Rectangle to a Rhino Surface.
         member r.RhSurface =
-            Geometry.NurbsSurface.CreateFromCorners(r.Pt0.RhPt, r.Pt1.RhPt, r.Pt2.RhPt, r.Pt3.RhPt)
+            Geometry.NurbsSurface.CreateFromCorners(r.Pnt0.RhPt, r.Pnt1.RhPt, r.Pnt2.RhPt, r.Pnt3.RhPt)
 
         static member toRhSurface (rect:Rect3D) =
-            Geometry.NurbsSurface.CreateFromCorners(rect.Pt0.RhPt, rect.Pt1.RhPt, rect.Pt2.RhPt, rect.Pt3.RhPt)
+            Geometry.NurbsSurface.CreateFromCorners(rect.Pnt0.RhPt, rect.Pnt1.RhPt, rect.Pnt2.RhPt, rect.Pnt3.RhPt)
 
         static member toRhPolyline (rect:Rect3D) =
             let pts = rect.PointsLooped |> Seq.map Pnt.toRhPt

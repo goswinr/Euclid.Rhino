@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-alpha4] - 2026-11-21
+### Changed
+- Update to Euclid 1.0.0-alpha4. Euclid 1.0 renames many members and curries most static members, see the [Euclid changelog](https://github.com/goswinr/Euclid/blob/main/CHANGELOG.md). The members that Euclid.Rhino adds keep their names.
+
 ### Fixed
 - Remove the unused Bash-only repository-name step from the Windows NuGet release workflow.
 - Correct README drawing examples and auto-open module names, and document Rhino host and reference requirements.
@@ -104,7 +108,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - align with Euclid 0.2.0
 
-[Unreleased]: https://github.com/goswinr/Euclid.Rhino/compare/0.52.0...HEAD
+[Unreleased]: https://github.com/goswinr/Euclid.Rhino/compare/1.0.0-alpha4...HEAD
+[1.0.0-alpha4]: https://github.com/goswinr/Euclid.Rhino/compare/0.52.0...1.0.0-alpha4
 [0.52.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.51.0...0.52.0
 [0.51.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.50.0...0.51.0
 [0.50.0]: https://github.com/goswinr/Euclid.Rhino/compare/0.42.0...0.50.0

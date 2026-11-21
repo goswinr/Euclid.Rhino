@@ -88,7 +88,7 @@ points |> List.iter (Pnt.draw >> ignore)
 let ln = Line3D(Pnt.Origin, Pnt(10.0, 10.0, 0.0))
 ln.Draw("layer name")
 
-let poly = Polyline3D.createFromPts points
+let poly = Polyline3D.createFromPnts points
 poly |> Polyline3D.draw |> ignore
 
 // Draw a polyline on a specific layer
